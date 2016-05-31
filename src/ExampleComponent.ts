@@ -1,4 +1,4 @@
-namespace IIIFComponents {
+namespace MyComponents {
     export class ExampleComponent extends Components.BaseComponent {
 
         constructor(options: IExampleComponentOptions) {
@@ -35,16 +35,16 @@ namespace IIIFComponents {
     }
 }
 
-namespace IIIFComponents.ExampleComponent {
+namespace MyComponents.ExampleComponent {
     export class Events {
         static TEST: string = 'test';
     }
 }
 
 (function(w) {
-    if (!w.IIIFComponents){
-        w.IIIFComponents = IIIFComponents;
+    if (!w.MyComponents){
+        w.MyComponents = MyComponents;
     } else {
-        w.IIIFComponents.ExampleComponent = IIIFComponents.ExampleComponent;
+        w.MyComponents.ExampleComponent = MyComponents.ExampleComponent;
     }
 })(window);

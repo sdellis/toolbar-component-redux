@@ -1,5 +1,5 @@
 // component-boilerplate v1.0.1 https://github.com/edsilv/iiif-tree-component#readme
-declare namespace IIIFComponents {
+declare namespace MyComponents {
     class ExampleComponent extends Components.BaseComponent {
         constructor(options: IExampleComponentOptions);
         test(): void;
@@ -8,13 +8,13 @@ declare namespace IIIFComponents {
         protected _resize(): void;
     }
 }
-declare namespace IIIFComponents.ExampleComponent {
+declare namespace MyComponents.ExampleComponent {
     class Events {
         static TEST: string;
     }
 }
 
-declare namespace IIIFComponents {
+declare namespace MyComponents {
     interface IExampleComponentOptions extends Components.IBaseComponentOptions {
     }
 }

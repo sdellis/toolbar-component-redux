@@ -5,8 +5,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var IIIFComponents;
-(function (IIIFComponents) {
+var MyComponents;
+(function (MyComponents) {
     var ExampleComponent = (function (_super) {
         __extends(ExampleComponent, _super);
         function ExampleComponent(options) {
@@ -32,10 +32,10 @@ var IIIFComponents;
         };
         return ExampleComponent;
     }(Components.BaseComponent));
-    IIIFComponents.ExampleComponent = ExampleComponent;
-})(IIIFComponents || (IIIFComponents = {}));
-var IIIFComponents;
-(function (IIIFComponents) {
+    MyComponents.ExampleComponent = ExampleComponent;
+})(MyComponents || (MyComponents = {}));
+var MyComponents;
+(function (MyComponents) {
     var ExampleComponent;
     (function (ExampleComponent) {
         var Events = (function () {
@@ -45,14 +45,14 @@ var IIIFComponents;
             return Events;
         }());
         ExampleComponent.Events = Events;
-    })(ExampleComponent = IIIFComponents.ExampleComponent || (IIIFComponents.ExampleComponent = {}));
-})(IIIFComponents || (IIIFComponents = {}));
+    })(ExampleComponent = MyComponents.ExampleComponent || (MyComponents.ExampleComponent = {}));
+})(MyComponents || (MyComponents = {}));
 (function (w) {
-    if (!w.IIIFComponents) {
-        w.IIIFComponents = IIIFComponents;
+    if (!w.MyComponents) {
+        w.MyComponents = MyComponents;
     }
     else {
-        w.IIIFComponents.ExampleComponent = IIIFComponents.ExampleComponent;
+        w.MyComponents.ExampleComponent = MyComponents.ExampleComponent;
     }
 })(window);
 
