@@ -32,7 +32,7 @@ declare namespace Components {
         constructor(options: IBaseComponentOptions);
         protected _init(): boolean;
         protected _getDefaultOptions(): IBaseComponentOptions;
-        protected emitEvent(event: string, ...args: any[]): void;
+        protected _emit(event: string, ...args: any[]): void;
         protected _resize(): void;
     }
     function applyMixins(derivedCtor: any, baseCtors: any[]): void;
@@ -40,6 +40,7 @@ declare namespace Components {
 
 declare namespace Components {
     interface IBaseComponent {
+        options: IBaseComponentOptions;
     }
 }
 

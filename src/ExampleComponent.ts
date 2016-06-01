@@ -9,7 +9,7 @@ namespace MyComponents {
         }
 
         public test(): void {
-            this.emitEvent(ExampleComponent.Events.TEST, [1, 2, 'three']);
+            this._emit(ExampleComponent.Events.TEST, [1, 2, 'three']);
         }
 
         protected _init(): boolean {

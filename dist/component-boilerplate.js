@@ -15,7 +15,7 @@ var MyComponents;
             this._resize();
         }
         ExampleComponent.prototype.test = function () {
-            this.emitEvent(ExampleComponent.Events.TEST, [1, 2, 'three']);
+            this._emit(ExampleComponent.Events.TEST, [1, 2, 'three']);
         };
         ExampleComponent.prototype._init = function () {
             var success = _super.prototype._init.call(this);
