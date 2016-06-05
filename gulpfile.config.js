@@ -5,7 +5,7 @@ var GulpConfig = (function () {
         this.name = metadata.name;
         // libs that must be included in a consuming app for this component to work
         this.deps = [
-            'node_modules/base-component/dist/base-component.min.js'
+            'node_modules/base-component/dist/base-component.js'
         ];
         // libs used for testing purposes, but not needed in a consuming app
         this.testDeps = [
@@ -19,7 +19,10 @@ var GulpConfig = (function () {
         this.dist = './dist';
         this.header = '// ' + this.name + ' v' + metadata.version + ' ' + metadata.homepage + '\n';
         this.jsOut = this.name + '.js';
+        this.jsMinOut = this.name + '.min.js';
+        this.jsBundleOut = this.name + '.bundle.js';
         this.dtsOut = this.name + '.d.ts';
+        this.dtsBundleOut = this.dtsOut;
         this.tsSrc = [
             'src/_references.ts',
             'src/*.ts',
