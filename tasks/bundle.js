@@ -5,7 +5,7 @@ var gulp = require('gulp');
 var merge = require('merge2');
 var path = require('path');
 
-gulp.task('bundle:deps', function(cb) {
+gulp.task('bundle', function(cb) {
     return merge([
         gulp.src(config.deps.concat([path.join(config.dist, config.jsMinOut)]))
             .pipe(concat(config.jsBundleOut))
@@ -15,7 +15,7 @@ gulp.task('bundle:deps', function(cb) {
 
 gulp.task('bundle:typings', function(cb) {
     return gulp.src(config.typings.concat([
-            path.join(config.typingsDir, config.dtsOut), // include optional typings/name.d.ts for customisations
+            path.join(config.typingsDir, config.dtsBundleOut), // include optional typings/name.d.ts for customisations
             path.join(config.dist, config.dtsOut)
         ]))
         .pipe(concat(config.dtsBundleOut))
