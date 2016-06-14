@@ -4,8 +4,6 @@ http://edsilv.github.io/component-boilerplate/examples/
 
     npm install
     
-    gulp sync
-    
     gulp
     
     gulp examples
