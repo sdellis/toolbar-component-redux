@@ -1,6 +1,6 @@
 # component-boilerplate
 
-http://edsilv.github.io/component-boilerplate/test/
+http://edsilv.github.io/component-boilerplate/examples/
 
     npm install
     
@@ -8,7 +8,7 @@ http://edsilv.github.io/component-boilerplate/test/
     
     gulp
     
-    gulp test
+    gulp examples
     
 ##Notes
 

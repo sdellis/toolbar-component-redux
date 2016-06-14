@@ -7,10 +7,11 @@ var GulpConfig = (function () {
         this.deps = [
             'node_modules/base-component/dist/base-component.js'
         ];
-        // libs that MAY be included in a consuming app but are used here for testing purposes
-        this.testDeps = [
+        // libs that MAY be included in a consuming app but are used here for examples purposes
+        this.examplesDeps = [
         ];
-        this.testDepsDir = './test/js';
+        this.examplesDir = './examples';
+        this.examplesDepsDir = './examples/js';
         // ts definitions to copy to the typings dir
         this.typings = [
             'node_modules/base-component/dist/base-component.d.ts'
