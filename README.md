@@ -1,6 +1,6 @@
 # component-boilerplate
 
-http://edsilv.github.io/component-boilerplate/examples/
+http://viewdir.github.io/component-boilerplate/examples/
 
     npm install
     
