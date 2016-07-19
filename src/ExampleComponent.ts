@@ -1,5 +1,5 @@
 namespace MyComponents {
-    export class ExampleComponent extends Components.BaseComponent {
+    export class ExampleComponent extends _Components.BaseComponent {
 
         constructor(options: IExampleComponentOptions) {
             super(options);

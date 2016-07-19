@@ -1,5 +1,5 @@
 namespace MyComponents{
-    export interface IExampleComponentOptions extends Components.IBaseComponentOptions {
+    export interface IExampleComponentOptions extends _Components.IBaseComponentOptions {
 
     }
 }
