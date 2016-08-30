@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/viewdir/iiif-tree-component.git"
+    "url": "git+https://github.com/viewdir/component-boilerplate.git"
   },
   "author": "Edward Silverton <e.silverton@gmail.com> (http://edsilv.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/viewdir/iiif-tree-component/issues"
+    "url": "https://github.com/viewdir/component-boilerplate/issues"
   },
-  "homepage": "https://github.com/viewdir/iiif-tree-component#readme",
+  "homepage": "https://github.com/viewdir/component-boilerplate#readme",
   "devDependencies": {
     "base-component": "git://github.com/viewdir/base-component.git",
     "del": "^2.2.0",
