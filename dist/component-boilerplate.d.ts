@@ -1,4 +1,4 @@
-// component-boilerplate v1.0.1 https://github.com/viewdir/iiif-tree-component#readme
+// component-boilerplate v1.0.2 https://github.com/viewdir/component-boilerplate#readme
 declare namespace MyComponents {
     class ExampleComponent extends _Components.BaseComponent {
         constructor(options: IExampleComponentOptions);
