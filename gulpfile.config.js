@@ -15,20 +15,20 @@ var GulpConfig = (function () {
             typings: [
                 'node_modules/base-component/dist/base-component.d.ts'
             ]
-        }
+        };
         this.fileNames = {
             jsOut: this.name + '.js',
             jsMinOut: this.name + '.min.js',
             jsBundleOut: this.name + '.bundle.js',
             dtsOut: this.name + '.d.ts',
             dtsBundleOut: this.name + '.bundle.d.ts'
-        }
+        };
         this.directories = {
             dist: './dist',
             examples: './examples',
             examplesJs: './examples/js',
             typings: './typings'
-        }
+        };
         this.typescript = {
             src: [
                 'src/_references.ts',
@@ -43,7 +43,7 @@ var GulpConfig = (function () {
                 module: 'commonjs',
                 sortOutput: true
             }
-        }
+        };
         this.browserify = {
             src: this.directories.dist,
             target: this.directories.dist,
