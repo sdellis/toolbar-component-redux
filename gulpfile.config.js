@@ -17,6 +17,7 @@ var GulpConfig = (function () {
             ]
         };
         this.fileNames = {
+            cssOut: this.name + '.css',
             jsOut: this.name + '.js',
             jsMinOut: this.name + '.min.js',
             jsBundleOut: this.name + '.bundle.js',
@@ -26,6 +27,8 @@ var GulpConfig = (function () {
         this.directories = {
             dist: './dist',
             examples: './examples',
+            examplesCss: './examples/css',
+            examplesImg: './examples/img',
             examplesJs: './examples/js',
             typings: './typings'
         };
@@ -51,6 +54,10 @@ var GulpConfig = (function () {
                 standalone: this.name,
                 debug: false
             }
+        };
+        this.sources = {
+            css: './src/css/styles.less',
+            img: './src/img/**'
         };
     }
     return GulpConfig;
