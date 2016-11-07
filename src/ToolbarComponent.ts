@@ -1,15 +1,15 @@
-namespace MyComponents {
-    export class ExampleComponent extends _Components.BaseComponent {
+namespace IIIFComponents {
+    export class ToolbarComponent extends _Components.BaseComponent {
 
-        constructor(options: IExampleComponentOptions) {
+        constructor(options: IToolbarComponentOptions) {
             super(options);
-            
+
             this._init();
             this._resize();
         }
 
         public test(): void {
-            this._emit(ExampleComponent.Events.TEST, [1, 2, 'three']);
+            this._emit(ToolbarComponent.Events.TEST, [1, 2, 'three']);
         }
 
         protected _init(): boolean {
@@ -18,33 +18,33 @@ namespace MyComponents {
             if (!success){
                 console.error("Component failed to initialise");
             }
-            
+
             this._$element.append("I am an example component");
 
             return success;
         }
-        
-        protected _getDefaultOptions(): IExampleComponentOptions {
-            return <IExampleComponentOptions>{
+
+        protected _getDefaultOptions(): IToolbarComponentOptions {
+            return <IToolbarComponentOptions>{
             }
         }
-        
+
         protected _resize(): void {
-            
+
         }
     }
 }
 
-namespace MyComponents.ExampleComponent {
+namespace IIIFComponents.ToolbarComponent {
     export class Events {
         static TEST: string = 'test';
     }
 }
 
 (function(w) {
-    if (!w.MyComponents){
-        w.MyComponents = MyComponents;
+    if (!w.IIIFComponents){
+        w.IIIFComponents = IIIFComponents;
     } else {
-        w.MyComponents.ExampleComponent = MyComponents.ExampleComponent;
+        w.IIIFComponents.ToolbarComponent = IIIFComponents.ToolbarComponent;
     }
 })(window);

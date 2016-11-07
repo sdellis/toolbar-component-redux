@@ -31,22 +31,22 @@ declare namespace _Components {
     }
 }
 
-declare namespace MyComponents {
-    class ExampleComponent extends _Components.BaseComponent {
-        constructor(options: IExampleComponentOptions);
-        test(): void;
-        protected _init(): boolean;
-        protected _getDefaultOptions(): IExampleComponentOptions;
-        protected _resize(): void;
-    }
-}
-declare namespace MyComponents.ExampleComponent {
-    class Events {
-        static TEST: string;
+declare namespace IIIFComponents {
+    interface IToolbarComponentOptions extends _Components.IBaseComponentOptions {
     }
 }
 
-declare namespace MyComponents {
-    interface IExampleComponentOptions extends _Components.IBaseComponentOptions {
+declare namespace IIIFComponents {
+    class ToolbarComponent extends _Components.BaseComponent {
+        constructor(options: IToolbarComponentOptions);
+        test(): void;
+        protected _init(): boolean;
+        protected _getDefaultOptions(): IToolbarComponentOptions;
+        protected _resize(): void;
+    }
+}
+declare namespace IIIFComponents.ToolbarComponent {
+    class Events {
+        static TEST: string;
     }
 }
