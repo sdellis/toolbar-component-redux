@@ -1,7 +1,16 @@
+declare var Redux: any;
+
 namespace IIIFComponents {
     export class ToolbarComponent extends _Components.BaseComponent {
 
+        public options: IToolbarComponentOptions;
+        private store: any;
+
         constructor(options: IToolbarComponentOptions) {
+            const default_opts: IToolbarComponentOptions = {
+                orientation: "vertical"
+            };
+            options = $.extend( default_opts, options );
             super(options);
 
             this._init();
@@ -19,7 +28,7 @@ namespace IIIFComponents {
                 console.error("Component failed to initialise");
             }
 
-            this._$element.append("I am an example component");
+            this._$element.append("I am a toolbar that is:" + this.options.orientation);
 
             return success;
         }

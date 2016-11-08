@@ -12,6 +12,10 @@ var IIIFComponents;
     var ToolbarComponent = (function (_super) {
         __extends(ToolbarComponent, _super);
         function ToolbarComponent(options) {
+            var default_opts = {
+                orientation: "vertical"
+            };
+            options = $.extend(default_opts, options);
             _super.call(this, options);
             this._init();
             this._resize();
@@ -24,7 +28,7 @@ var IIIFComponents;
             if (!success) {
                 console.error("Component failed to initialise");
             }
-            this._$element.append("I am an example component");
+            this._$element.append("I am a toolbar that is:" + this.options.orientation);
             return success;
         };
         ToolbarComponent.prototype._getDefaultOptions = function () {

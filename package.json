@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/viewdir/component-boilerplate.git"
   },
-  "author": "Edward Silverton <e.silverton@gmail.com> (http://edsilv.com)",
+  "author": "Shaun Ellis <shaun@sdellis.com> (http://sdellis.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/viewdir/component-boilerplate/issues"
@@ -30,11 +30,11 @@
     "manifesto": "viewdir/manifesto",
     "merge2": "^1.0.2",
     "path": "^0.12.7",
+    "redux": "^3.6.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.2.1",
     "yargs": "^4.7.1"
   },
   "dependencies": {
-
   }
 }

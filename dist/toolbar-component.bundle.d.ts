@@ -33,11 +33,15 @@ declare namespace _Components {
 
 declare namespace IIIFComponents {
     interface IToolbarComponentOptions extends _Components.IBaseComponentOptions {
+        orientation?: string;
     }
 }
 
+declare var Redux: any;
 declare namespace IIIFComponents {
     class ToolbarComponent extends _Components.BaseComponent {
+        options: IToolbarComponentOptions;
+        private store;
         constructor(options: IToolbarComponentOptions);
         test(): void;
         protected _init(): boolean;

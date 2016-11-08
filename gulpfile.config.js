@@ -7,7 +7,8 @@ var GulpConfig = (function () {
         this.dependencies = {
             // libs that MUST be included in a consuming app for this component to work
             libs: [
-                'node_modules/base-component/dist/base-component.bundle.js'
+                'node_modules/base-component/dist/base-component.bundle.js',
+                'node_modules/redux/dist/redux.min.js'
             ],
             // libs that MAY be included in a consuming app but are used here for examples purposes
             examples: [],
