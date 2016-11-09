@@ -25,7 +25,7 @@ declare namespace IIIFComponents {
     class ToolbarComponent extends _Components.BaseComponent {
         options: IToolbarComponentOptions;
         private _$toolbar;
-        private store;
+        private _buttons;
         constructor(options: IToolbarComponentOptions);
         test(): void;
         protected _init(): boolean;
