@@ -45,17 +45,19 @@ var IIIFComponents;
             if (!success) {
                 console.error("Component failed to initialise");
             }
+            this._buttons = this.options.buttons;
+            var that = this;
             //this._$toolbar = $('<div id="toolbar" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"/>');
             this._$toolbar = $('<div id="toolbar" class="btn-group" role="group" aria-label="Toolbar button group"/>');
             this._$element.append(this._$toolbar);
             $.templates({
                 toolbarButtonsTemplate: '\
-                {^{for buttons}}\
+                {^{for _buttons}}\
                     <button type="button" class="btn btn-secondary">{^{:label}}</button>\
                 {{/for}}'
             });
             //this._$element.append("I am a toolbar that is " + this.options.orientation + ", with these buttons: " + this.options.buttons.join(","));
-            $.templates.toolbarButtonsTemplate.link(this._$toolbar, this.options);
+            $.templates.toolbarButtonsTemplate.link(this._$toolbar, this);
             $(".btn").on("click", function () {
                 // From the clicked HTML element ('this'), get the view object
                 var view = $.view(this);
@@ -64,7 +66,14 @@ var IIIFComponents;
                 // The index of this 'item view'. (Equals index of button in buttons array)
                 var index = view.index;
                 // Change the button.label
-                $.observable(button).setProperty("label", button.label + " " + index);
+                //$.observable(button).setProperty("label", button.label + " " + index);
+                //$.observable(this._buttons).setProperty("label", button.label + " " + index);
+                //
+                //   $.observable(that._buttons).refresh(
+                //     that._buttons.slice().reverse() // copy array and reverse it
+                //   );
+                $.observable(that._buttons).insert({ label: "cloud", icon: "c", selected: false, disabled: true } // copy array and reverse it
+                );
             });
             return success;
         };
