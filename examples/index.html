@@ -1,32 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>component-boilerplate: test</title>
+    <title>toolbar-component example</title>
     <meta charset="utf-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/component-boilerplate.css" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
-    <script src="js/component-boilerplate.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/0.9.76/jsviews.min.js"></script>
+    <script src="js/base-component.bundle.js"></script>
+    <script src="js/toolbar-component.js"></script>
 </head>
 <body>
-    
-    <div id="component"></div>
+
+    <div id="toolbar"></div>
+
+    <div class="btn-group" role="group" aria-label="test button group">
+      <button type="button" class="btn btn-default">This</button>
+      <button type="button" class="btn btn-default">is a</button>
+      <button type="button" class="btn btn-default">reference toolbar.</button>
+    </div>
 
     <script>
 
-        var component;
-        
+        var toolbar;
+
         $(function() {
 
-            component = new MyComponents.ExampleComponent({
-                element: "#component"
+            toolbar = new IIIFComponents.ToolbarComponent({
+                element: "#toolbar",
+                orientation: "horizontal", // or "vertical"
+                hidden: false,
+                buttons: [
+                    { label: "pencil", icon: "p", selected: false, disabled: false },
+                    { label: "rect", icon: "r", selected: false, disabled: false }
+                ]
             });
-            
-            component.on('test', function(args) {
-                alert(args);
+
+            toolbar.on('test', function(args) {
+                console.log(args);
             });
-            
-            component.test();
-            
+
+            toolbar.test();
+
         });
     </script>
 </body>
