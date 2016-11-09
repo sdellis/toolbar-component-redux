@@ -2,6 +2,21 @@
 declare namespace IIIFComponents {
     interface IToolbarComponentOptions extends _Components.IBaseComponentOptions {
         orientation?: string;
+        buttons?: any[];
+    }
+}
+
+declare namespace IIIFComponents {
+    class ToolbarButton {
+        $wrapper: JQuery;
+        options: any;
+        private default_opts;
+        private store;
+        private label;
+        private icon;
+        private selected;
+        private disabled;
+        constructor(options: any);
     }
 }
 
@@ -9,6 +24,7 @@ declare var Redux: any;
 declare namespace IIIFComponents {
     class ToolbarComponent extends _Components.BaseComponent {
         options: IToolbarComponentOptions;
+        private _$toolbar;
         private store;
         constructor(options: IToolbarComponentOptions);
         test(): void;

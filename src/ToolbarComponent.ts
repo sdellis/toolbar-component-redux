@@ -4,13 +4,9 @@ namespace IIIFComponents {
     export class ToolbarComponent extends _Components.BaseComponent {
 
         public options: IToolbarComponentOptions;
-        private store: any;
+        private _$toolbar: JQuery;
 
         constructor(options: IToolbarComponentOptions) {
-            const default_opts: IToolbarComponentOptions = {
-                orientation: "vertical"
-            };
-            options = $.extend( default_opts, options );
             super(options);
 
             this._init();
@@ -28,13 +24,41 @@ namespace IIIFComponents {
                 console.error("Component failed to initialise");
             }
 
-            this._$element.append("I am a toolbar that is:" + this.options.orientation);
+            //this._$toolbar = $('<div id="toolbar" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"/>');
+            this._$toolbar = $('<div id="toolbar" class="btn-group" role="group" aria-label="Toolbar button group"/>');
+            this._$element.append(this._$toolbar);
+
+            $.templates({
+                toolbarButtonsTemplate: '\
+                {^{for buttons}}\
+                    <button type="button" class="btn btn-secondary">{^{:label}}</button>\
+                {{/for}}'
+            });
+            //this._$element.append("I am a toolbar that is " + this.options.orientation + ", with these buttons: " + this.options.buttons.join(","));
+            $.templates.toolbarButtonsTemplate.link(this._$toolbar, this.options);
+
+            $(".btn").on("click", function() {
+              // From the clicked HTML element ('this'), get the view object
+              var view = $.view(this);
+
+              // The 'button' data object for clicked button
+              var button = view.data;
+
+              // The index of this 'item view'. (Equals index of button in buttons array)
+              var index = view.index;
+
+              // Change the button.label
+              $.observable(button).setProperty("label", button.label + " " + index);
+            });
 
             return success;
         }
 
         protected _getDefaultOptions(): IToolbarComponentOptions {
             return <IToolbarComponentOptions>{
+                orientation: "vertical",
+                buttons: ["easy"],
+                hidden: false
             }
         }
 
