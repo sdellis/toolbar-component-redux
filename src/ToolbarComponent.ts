@@ -29,13 +29,14 @@ namespace IIIFComponents {
             var that = this;
 
             //this._$toolbar = $('<div id="toolbar" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"/>');
-            this._$toolbar = $('<div id="toolbar" class="btn-group" role="group" aria-label="Toolbar button group"/>');
+            this._$toolbar = $('<div id="group" class="btn-group" role="group" aria-label="Toolbar button group"/>');
             this._$element.append(this._$toolbar);
 
             $.templates({
                 toolbarButtonsTemplate: '\
                 {^{for _buttons}}\
-                    <button type="button" class="btn btn-secondary">{^{:label}}</button>\
+                    <button type="button" data-link="class{:selected?\'btn btn-secondary active\:\'btn btn-secondary\'}">\
+                    {{:label}}</button>\
                 {{/for}}'
             });
             //this._$element.append("I am a toolbar that is " + this.options.orientation + ", with these buttons: " + this.options.buttons.join(","));
@@ -44,25 +45,27 @@ namespace IIIFComponents {
             $(".btn").on("click", function() {
               // From the clicked HTML element ('this'), get the view object
               var view = $.view(this);
-
+              //console.log(view);
               // The 'button' data object for clicked button
               var button = view.data;
 
               // The index of this 'item view'. (Equals index of button in buttons array)
               var index = view.index;
-
+              console.log(index);
               // Change the button.label
-              //$.observable(button).setProperty("label", button.label + " " + index);
+              $.observable(button).setProperty("selected", !button.selected);
+              //$.observable(that._buttons[index]).setProperty("selected", !that._buttons[index].selected);
+              console.log(that._buttons);
               //$.observable(this._buttons).setProperty("label", button.label + " " + index);
               //
             //   $.observable(that._buttons).refresh(
             //     that._buttons.slice().reverse() // copy array and reverse it
             //   );
-
+            /*
               $.observable(that._buttons).insert(
-                { label: "cloud", icon: "c", selected: false, disabled: true } // copy array and reverse it
+                { label: "new button", icon: "new", selected: false, disabled: true } // copy array and reverse it
               );
-
+              */
             });
 
             return success;
