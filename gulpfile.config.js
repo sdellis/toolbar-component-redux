@@ -8,7 +8,10 @@ var GulpConfig = (function () {
             // libs that MUST be included in a consuming app for this component to work
             libs: [
                 'node_modules/base-component/dist/base-component.bundle.js',
-                'node_modules/redux/dist/redux.min.js'
+                'node_modules/redux/dist/redux.min.js',
+                'node_modules/virtual-dom/dist/virtual-dom.js',
+                'node_modules/core-js/shim.js',
+                'node_modules/core-js/library/es6/*'
             ],
             // libs that MAY be included in a consuming app but are used here for examples purposes
             examples: [],

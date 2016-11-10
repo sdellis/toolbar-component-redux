@@ -1,4 +1,11 @@
 declare var Redux: any;
+// import Reducer = Redux.Reducer;
+
+var h = require('virtual-dom/h');
+var diff = require('virtual-dom/diff');
+var patch = require('virtual-dom/patch');
+var createElement = require('virtual-dom/create-element');
+
 
 namespace IIIFComponents {
     export class ToolbarComponent extends _Components.BaseComponent {
@@ -26,47 +33,116 @@ namespace IIIFComponents {
             }
             this._buttons = this.options.buttons;
 
-            var that = this;
+            // 1: Create a function that declares what the DOM should look like
+            function render(state)  {
+                return h('div', {
+                    style: {
+                        textAlign: 'center',
+                        lineHeight: (100 + state.count) + 'px',
+                        border: '1px solid ' + state.color,
+                        width: (100 + state.count) + 'px',
+                        height: (100 + state.count) + 'px'
+                    }
+                }, [String(state.count)]);
+            }
 
-            //this._$toolbar = $('<div id="toolbar" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"/>');
-            this._$toolbar = $('<div id="group" class="btn-group" role="group" aria-label="Toolbar button group"/>');
-            this._$element.append(this._$toolbar);
+            // Initialise the state and doc
+            const initialState = { count: 0, color: 'red' };      // We need some app data. Here we just store a count.
 
-            $.templates({
-                toolbarButtonsTemplate: '\
-                {^{for _buttons}}\
-                    <button type="button" data-link="class{:selected?\'btn btn-secondary active\:\'btn btn-secondary\'}">\
-                    {{:label}}</button>\
-                {{/for}}'
-            });
-            //this._$element.append("I am a toolbar that is " + this.options.orientation + ", with these buttons: " + this.options.buttons.join(","));
-            $.templates.toolbarButtonsTemplate.link(this._$toolbar, this);
+            var tree = render(initialState);               // We need an initial tree
+            var rootNode = createElement(tree);     // Create an initial root DOM node ...
+            document.body.appendChild(rootNode);    // ... and it should be in the document
 
-            $(".btn").on("click", function() {
-              // From the clicked HTML element ('this'), get the view object
-              var view = $.view(this);
-              //console.log(view);
-              // The 'button' data object for clicked button
-              var button = view.data;
 
-              // The index of this 'item view'. (Equals index of button in buttons array)
-              var index = view.index;
-              console.log(index);
-              // Change the button.label
-              $.observable(button).setProperty("selected", !button.selected);
-              //$.observable(that._buttons[index]).setProperty("selected", !that._buttons[index].selected);
-              console.log(that._buttons);
-              //$.observable(this._buttons).setProperty("label", button.label + " " + index);
-              //
-            //   $.observable(that._buttons).refresh(
-            //     that._buttons.slice().reverse() // copy array and reverse it
-            //   );
             /*
-              $.observable(that._buttons).insert(
-                { label: "new button", icon: "new", selected: false, disabled: true } // copy array and reverse it
-              );
-              */
-            });
+             * action types
+             */
+
+            const GROW = 'GROW';
+            const RESET = 'RESET';
+            const CHANGE_COLOR = 'CHANGE_COLOR';
+
+            /*
+             * action creators
+             */
+
+            function grow(count) {
+              // count++;
+              return { type: GROW, count }
+            }
+
+            function reset(count) {
+              // count = 0;
+              return { type: RESET, count }
+            }
+
+            function changeColor(color) {
+              // color === "red" ? "green" : "red";
+              return { type: CHANGE_COLOR, color }
+            }
+
+            function count(state = 0, action) {
+              switch (action.type) {
+                case GROW:
+                  return Object.assign({}, state, {
+                    count: action.count++
+                  })
+                case RESET:
+                  return Object.assign({}, state, {
+                    count: 0
+                  })
+                default:
+                  return state
+              }
+            }
+
+            function color(state = 'red', action) {
+              switch (action.type) {
+                case CHANGE_COLOR:
+                  return Object.assign({}, state, {
+                    color: action.color
+                  })
+                default:
+                  return state
+              }
+            }
+
+            function app(state = initialState, action) {
+                return {
+                  count: count(state.count, action),
+                  color: color(state.color, action)
+                }
+            }
+
+            let store = Redux.createStore(todoApp)
+
+            //
+            // 3: Wire up the update logic
+            // setInterval(function () {
+            //       count++;
+            //
+            //       var newTree = render(count);
+            //       var patches = diff(tree, newTree);
+            //       rootNode = patch(rootNode, patches);
+            //       tree = newTree;
+            // }, 1000);
+            //
+            // const appReducer = (state = initialState, actions) => {
+            //
+            //   switch (action.type) {
+            //     case GROW:
+            //       return Object.assign({}, state, {
+            //         count: action.count
+            //       })
+            //     case RESET:
+            //       return Object.assign({}, state, {
+            //         count: action.count
+            //       })
+            //     default:
+            //       return state
+            //   }
+            //
+            // }
 
             return success;
         }

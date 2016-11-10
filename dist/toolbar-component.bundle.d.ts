@@ -53,6 +53,10 @@ declare namespace IIIFComponents {
 }
 
 declare var Redux: any;
+declare var h: any;
+declare var diff: any;
+declare var patch: any;
+declare var createElement: any;
 declare namespace IIIFComponents {
     class ToolbarComponent extends _Components.BaseComponent {
         options: IToolbarComponentOptions;
