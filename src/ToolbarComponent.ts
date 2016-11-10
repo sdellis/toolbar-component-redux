@@ -116,34 +116,6 @@ namespace IIIFComponents {
 
             let store = Redux.createStore(todoApp)
 
-            //
-            // 3: Wire up the update logic
-            // setInterval(function () {
-            //       count++;
-            //
-            //       var newTree = render(count);
-            //       var patches = diff(tree, newTree);
-            //       rootNode = patch(rootNode, patches);
-            //       tree = newTree;
-            // }, 1000);
-            //
-            // const appReducer = (state = initialState, actions) => {
-            //
-            //   switch (action.type) {
-            //     case GROW:
-            //       return Object.assign({}, state, {
-            //         count: action.count
-            //       })
-            //     case RESET:
-            //       return Object.assign({}, state, {
-            //         count: action.count
-            //       })
-            //     default:
-            //       return state
-            //   }
-            //
-            // }
-
             return success;
         }
 
