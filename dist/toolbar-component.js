@@ -3,19 +3,18 @@
 //import * as actionTypes from './ActionTypes';
 var IIIFComponents;
 (function (IIIFComponents) {
-    function grow(count) {
-        // count++;
-        return { type: IIIFComponents.GROW, count: count };
+    function grow(i) {
+        if (i === void 0) { i = 1; }
+        return { type: IIIFComponents.GROW, incrementBy: i };
     }
     IIIFComponents.grow = grow;
-    function reset(count) {
-        // count = 0;
-        return { type: IIIFComponents.RESET, count: count };
+    function reset() {
+        return { type: IIIFComponents.RESET };
     }
     IIIFComponents.reset = reset;
-    function changeColor(color) {
-        // color === "red" ? "green" : "red";
-        return { type: IIIFComponents.CHANGE_COLOR, color: color };
+    function changeColor(c) {
+        if (c === void 0) { c = "red"; }
+        return { type: IIIFComponents.CHANGE_COLOR, color: c };
     }
     IIIFComponents.changeColor = changeColor;
 })(IIIFComponents || (IIIFComponents = {}));
@@ -50,14 +49,11 @@ var IIIFComponents;
     IIIFComponents.ToolbarButton = ToolbarButton;
 })(IIIFComponents || (IIIFComponents = {}));
 
-// declare var Redux: any;
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-// var assign = require('es6-object-assign').assign;
-// import Reducer = Redux.Reducer;
 var Redux = require('redux');
 require('virtual-dom/h');
 var h = require('virtual-dom/h');
@@ -82,12 +78,12 @@ var IIIFComponents;
                 console.error("Component failed to initialise");
             }
             this._buttons = this.options.buttons;
-            console.log(IIIFComponents.GROW);
-            // 1: Create a function that declares what the DOM should look like
+            // Create a function that declares what the DOM should look like
             function render(state) {
                 return h('div', {
                     style: {
                         textAlign: 'center',
+                        margin: '50px',
                         lineHeight: (100 + state.count) + 'px',
                         border: '1px solid ' + state.color,
                         width: (100 + state.count) + 'px',
@@ -95,22 +91,33 @@ var IIIFComponents;
                     }
                 }, [String(state.count)]);
             }
-            // Initialise the state and doc
-            var initialState = { count: 0, color: 'red' }; // We need some app data. Here we just store a count.
+            // Initialise the state and document/view
+            var initialState = { count: 0, color: 'red' }; // We need some app data.
             var tree = render(initialState); // We need an initial tree
             var rootNode = createElement(tree); // Create an initial root DOM node ...
             document.body.appendChild(rootNode); // ... and it should be in the document
+            function updateView() {
+                var newTree = render(store.getState());
+                var patches = diff(tree, newTree);
+                rootNode = patch(rootNode, patches);
+                tree = newTree;
+                console.log(store.getState());
+                // emit event
+            }
             function count(state, action) {
                 if (state === void 0) { state = 0; }
                 switch (action.type) {
                     case IIIFComponents.GROW:
-                        return Object.assign({}, state, {
-                            count: action.count++
-                        });
+                        return state + action.incrementBy;
+                    //*
+                    // Leaving this here for reference,
+                    // in case you want to return an object
+                    //*
+                    //   return Object.assign({}, state, {
+                    //     count: state + action.incrementBy
+                    //   })
                     case IIIFComponents.RESET:
-                        return Object.assign({}, state, {
-                            count: 0
-                        });
+                        return 0;
                     default:
                         return state;
                 }
@@ -119,9 +126,10 @@ var IIIFComponents;
                 if (state === void 0) { state = 'red'; }
                 switch (action.type) {
                     case IIIFComponents.CHANGE_COLOR:
-                        return Object.assign({}, state, {
-                            color: action.color
-                        });
+                        return action.color;
+                    //   return Object.assign({}, state, {
+                    //     color: action.color
+                    //   })
                     default:
                         return state;
                 }
@@ -134,6 +142,17 @@ var IIIFComponents;
                 };
             }
             var store = Redux.createStore(app);
+            var unsubscribe = store.subscribe(function () {
+                return updateView();
+            });
+            // Add Event Listeners
+            // Note: The only way to mutate the internal state is to dispatch an action.
+            $('#grow10').click(function () { return store.dispatch(IIIFComponents.grow(10)); });
+            $('#grow50').click(function () { return store.dispatch(IIIFComponents.grow(50)); });
+            $('#reset').click(function () { return store.dispatch(IIIFComponents.reset()); });
+            $('input[type=radio][name=color]').change(function () {
+                store.dispatch(IIIFComponents.changeColor(this.value));
+            });
             return success;
         };
         ToolbarComponent.prototype._getDefaultOptions = function () {

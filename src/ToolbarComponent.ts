@@ -1,14 +1,9 @@
-// declare var Redux: any;
-
-// var assign = require('es6-object-assign').assign;
-// import Reducer = Redux.Reducer;
 var Redux = require('redux');
 require('virtual-dom/h');
 var h = require('virtual-dom/h');
 var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
-
 
 namespace IIIFComponents {
     export class ToolbarComponent extends _Components.BaseComponent {
@@ -35,12 +30,13 @@ namespace IIIFComponents {
                 console.error("Component failed to initialise");
             }
             this._buttons = this.options.buttons;
-            console.log(GROW);
-            // 1: Create a function that declares what the DOM should look like
+
+            // Create a function that declares what the DOM should look like
             function render(state)  {
                 return h('div', {
                     style: {
                         textAlign: 'center',
+                        margin: '50px',
                         lineHeight: (100 + state.count) + 'px',
                         border: '1px solid ' + state.color,
                         width: (100 + state.count) + 'px',
@@ -49,24 +45,34 @@ namespace IIIFComponents {
                 }, [String(state.count)]);
             }
 
-            // Initialise the state and doc
-            const initialState = { count: 0, color: 'red' };      // We need some app data. Here we just store a count.
-
+            // Initialise the state and document/view
+            const initialState = { count: 0, color: 'red' };      // We need some app data.
             var tree = render(initialState);               // We need an initial tree
             var rootNode = createElement(tree);     // Create an initial root DOM node ...
             document.body.appendChild(rootNode);    // ... and it should be in the document
 
+            function updateView(){
+              var newTree = render(store.getState());
+              var patches = diff(tree, newTree);
+              rootNode = patch(rootNode, patches);
+              tree = newTree;
+              console.log(store.getState());
+              // emit event
+            }
 
             function count(state = 0, action) {
               switch (action.type) {
                 case GROW:
-                  return Object.assign({}, state, {
-                    count: action.count++
-                  })
+                  return state + action.incrementBy
+                //*
+                // Leaving this here for reference,
+                // in case you want to return an object
+                //*
+                //   return Object.assign({}, state, {
+                //     count: state + action.incrementBy
+                //   })
                 case RESET:
-                  return Object.assign({}, state, {
-                    count: 0
-                  })
+                  return 0
                 default:
                   return state
               }
@@ -75,9 +81,10 @@ namespace IIIFComponents {
             function color(state = 'red', action) {
               switch (action.type) {
                 case CHANGE_COLOR:
-                  return Object.assign({}, state, {
-                    color: action.color
-                  })
+                  return action.color
+                //   return Object.assign({}, state, {
+                //     color: action.color
+                //   })
                 default:
                   return state
               }
@@ -91,6 +98,19 @@ namespace IIIFComponents {
             }
 
             let store = Redux.createStore(app)
+
+            let unsubscribe = store.subscribe(() =>
+              updateView()
+            )
+
+            // Add Event Listeners
+            // Note: The only way to mutate the internal state is to dispatch an action.
+            $('#grow10').click(() => store.dispatch(grow(10)));
+            $('#grow50').click(() => store.dispatch(grow(50)));
+            $('#reset').click(() => store.dispatch(reset()));
+            $('input[type=radio][name=color]').change(function() {
+                store.dispatch(changeColor(this.value));
+            });
 
             return success;
         }

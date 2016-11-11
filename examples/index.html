@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/component-boilerplate.css" />
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
     <script src="js/base-component.bundle.js"></script>
     <script src="js/toolbar-component.js"></script>
@@ -15,9 +15,21 @@
     <div id="toolbar"></div>
 
     <div class="btn-group" role="group" aria-label="test button group">
-      <button type="button" class="btn btn-default">This</button>
-      <button type="button" class="btn btn-default">is a</button>
-      <button type="button" class="btn btn-default">reference toolbar.</button>
+      <button id="grow10" type="button" class="btn btn-default">Grow by 10</button>
+      <button id="grow50" type="button" class="btn btn-default">Grow by 50</button>
+      <button id="reset" type="button" class="btn btn-default">Reset</button>
+    </div>
+
+    <div class="btn-group">
+      <label class="btn btn-primary">
+        <input name="color" type="radio" autocomplete="off" value="red" checked> Red
+      </label>
+      <label class="btn btn-primary">
+        <input name="color" type="radio" type="checkbox" autocomplete="off" value="green"> Green
+      </label>
+      <label class="btn btn-primary">
+        <input name="color" type="radio" type="checkbox" autocomplete="off" value="blue"> Blue
+      </label>
     </div>
 
     <script>
@@ -36,6 +48,9 @@
                 ]
             });
 
+            // todo: listen for stateUpdate
+            // break out reducers
+            // tests!
             toolbar.on('test', function(args) {
                 console.log(args);
             });

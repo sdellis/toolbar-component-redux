@@ -32,17 +32,16 @@ declare namespace _Components {
 }
 
 declare namespace IIIFComponents {
-    function grow(count: any): {
+    function grow(i?: number): {
         type: string;
-        count: any;
+        incrementBy: number;
     };
-    function reset(count: any): {
+    function reset(): {
         type: string;
-        count: any;
     };
-    function changeColor(color: any): {
+    function changeColor(c?: string): {
         type: string;
-        color: any;
+        color: string;
     };
 }
 
