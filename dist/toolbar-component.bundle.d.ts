@@ -32,6 +32,27 @@ declare namespace _Components {
 }
 
 declare namespace IIIFComponents {
+    function grow(count: any): {
+        type: string;
+        count: any;
+    };
+    function reset(count: any): {
+        type: string;
+        count: any;
+    };
+    function changeColor(color: any): {
+        type: string;
+        color: any;
+    };
+}
+
+declare namespace IIIFComponents {
+    const GROW: string;
+    const RESET: string;
+    const CHANGE_COLOR: string;
+}
+
+declare namespace IIIFComponents {
     interface IToolbarComponentOptions extends _Components.IBaseComponentOptions {
         orientation?: string;
         buttons?: any[];

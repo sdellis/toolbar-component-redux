@@ -1,8 +1,8 @@
-declare var Redux: any;
+// declare var Redux: any;
 
 // var assign = require('es6-object-assign').assign;
 // import Reducer = Redux.Reducer;
-
+var Redux = require('redux');
 require('virtual-dom/h');
 var h = require('virtual-dom/h');
 var diff = require('virtual-dom/diff');
@@ -35,7 +35,7 @@ namespace IIIFComponents {
                 console.error("Component failed to initialise");
             }
             this._buttons = this.options.buttons;
-
+            console.log(GROW);
             // 1: Create a function that declares what the DOM should look like
             function render(state)  {
                 return h('div', {
@@ -56,33 +56,6 @@ namespace IIIFComponents {
             var rootNode = createElement(tree);     // Create an initial root DOM node ...
             document.body.appendChild(rootNode);    // ... and it should be in the document
 
-
-            /*
-             * action types
-             */
-
-            const GROW = 'GROW';
-            const RESET = 'RESET';
-            const CHANGE_COLOR = 'CHANGE_COLOR';
-
-            /*
-             * action creators
-             */
-
-            function grow(count) {
-              // count++;
-              return { type: GROW, count }
-            }
-
-            function reset(count) {
-              // count = 0;
-              return { type: RESET, count }
-            }
-
-            function changeColor(color) {
-              // color === "red" ? "green" : "red";
-              return { type: CHANGE_COLOR, color }
-            }
 
             function count(state = 0, action) {
               switch (action.type) {
