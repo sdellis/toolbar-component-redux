@@ -1,4 +1,9 @@
-declare var Redux: any;
+var Redux = require('redux');
+require('virtual-dom/h');
+var h = require('virtual-dom/h');
+var diff = require('virtual-dom/diff');
+var patch = require('virtual-dom/patch');
+var createElement = require('virtual-dom/create-element');
 
 namespace IIIFComponents {
     export class ToolbarComponent extends _Components.BaseComponent {
@@ -26,43 +31,85 @@ namespace IIIFComponents {
             }
             this._buttons = this.options.buttons;
 
-            var that = this;
+            // Create a function that declares what the DOM should look like
+            function render(state)  {
+                return h('div', {
+                    style: {
+                        textAlign: 'center',
+                        margin: '50px',
+                        lineHeight: (100 + state.count) + 'px',
+                        border: '1px solid ' + state.color,
+                        width: (100 + state.count) + 'px',
+                        height: (100 + state.count) + 'px'
+                    }
+                }, [String(state.count)]);
+            }
 
-            //this._$toolbar = $('<div id="toolbar" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"/>');
-            this._$toolbar = $('<div id="toolbar" class="btn-group" role="group" aria-label="Toolbar button group"/>');
-            this._$element.append(this._$toolbar);
+            // Initialise the state and document/view
+            const initialState = { count: 0, color: 'red' };      // We need some app data.
+            var tree = render(initialState);               // We need an initial tree
+            var rootNode = createElement(tree);     // Create an initial root DOM node ...
+            document.body.appendChild(rootNode);    // ... and it should be in the document
 
-            $.templates({
-                toolbarButtonsTemplate: '\
-                {^{for _buttons}}\
-                    <button type="button" class="btn btn-secondary">{^{:label}}</button>\
-                {{/for}}'
-            });
-            //this._$element.append("I am a toolbar that is " + this.options.orientation + ", with these buttons: " + this.options.buttons.join(","));
-            $.templates.toolbarButtonsTemplate.link(this._$toolbar, this);
+            function updateView(){
+              var newTree = render(store.getState());
+              var patches = diff(tree, newTree);
+              rootNode = patch(rootNode, patches);
+              tree = newTree;
+              console.log(store.getState());
+              // emit event
+            }
 
-            $(".btn").on("click", function() {
-              // From the clicked HTML element ('this'), get the view object
-              var view = $.view(this);
+            function count(state = 0, action) {
+              switch (action.type) {
+                case GROW:
+                  return state + action.incrementBy
+                //*
+                // Leaving this here for reference,
+                // in case you want to return an object
+                //*
+                //   return Object.assign({}, state, {
+                //     count: state + action.incrementBy
+                //   })
+                case RESET:
+                  return 0
+                default:
+                  return state
+              }
+            }
 
-              // The 'button' data object for clicked button
-              var button = view.data;
+            function color(state = 'red', action) {
+              switch (action.type) {
+                case CHANGE_COLOR:
+                  return action.color
+                //   return Object.assign({}, state, {
+                //     color: action.color
+                //   })
+                default:
+                  return state
+              }
+            }
 
-              // The index of this 'item view'. (Equals index of button in buttons array)
-              var index = view.index;
+            function app(state = initialState, action) {
+                return {
+                  count: count(state.count, action),
+                  color: color(state.color, action)
+                }
+            }
 
-              // Change the button.label
-              //$.observable(button).setProperty("label", button.label + " " + index);
-              //$.observable(this._buttons).setProperty("label", button.label + " " + index);
-              //
-            //   $.observable(that._buttons).refresh(
-            //     that._buttons.slice().reverse() // copy array and reverse it
-            //   );
+            let store = Redux.createStore(app)
 
-              $.observable(that._buttons).insert(
-                { label: "cloud", icon: "c", selected: false, disabled: true } // copy array and reverse it
-              );
+            let unsubscribe = store.subscribe(() =>
+              updateView()
+            )
 
+            // Add Event Listeners
+            // Note: The only way to mutate the internal state is to dispatch an action.
+            $('#grow10').click(() => store.dispatch(grow(10)));
+            $('#grow50').click(() => store.dispatch(grow(50)));
+            $('#reset').click(() => store.dispatch(reset()));
+            $('input[type=radio][name=color]').change(function() {
+                store.dispatch(changeColor(this.value));
             });
 
             return success;
