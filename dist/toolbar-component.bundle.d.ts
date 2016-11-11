@@ -53,7 +53,6 @@ declare namespace IIIFComponents {
 }
 
 declare var Redux: any;
-declare var assign: any;
 declare var h: any;
 declare var diff: any;
 declare var patch: any;

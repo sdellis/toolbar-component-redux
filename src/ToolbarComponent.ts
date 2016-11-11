@@ -1,5 +1,6 @@
 declare var Redux: any;
-var assign = require('es6-object-assign').assign;
+
+// var assign = require('es6-object-assign').assign;
 // import Reducer = Redux.Reducer;
 
 require('virtual-dom/h');
@@ -86,11 +87,11 @@ namespace IIIFComponents {
             function count(state = 0, action) {
               switch (action.type) {
                 case GROW:
-                  return assign({}, state, {
+                  return Object.assign({}, state, {
                     count: action.count++
                   })
                 case RESET:
-                  return assign({}, state, {
+                  return Object.assign({}, state, {
                     count: 0
                   })
                 default:
@@ -101,7 +102,7 @@ namespace IIIFComponents {
             function color(state = 'red', action) {
               switch (action.type) {
                 case CHANGE_COLOR:
-                  return assign({}, state, {
+                  return Object.assign({}, state, {
                     color: action.color
                   })
                 default:
