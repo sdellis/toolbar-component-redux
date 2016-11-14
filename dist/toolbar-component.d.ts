@@ -27,6 +27,14 @@ declare namespace IIIFComponents {
 }
 
 declare namespace IIIFComponents {
+    function color(state: string, action: any): any;
+}
+
+declare namespace IIIFComponents {
+    function count(state: number, action: any): any;
+}
+
+declare namespace IIIFComponents {
     class ToolbarButton {
         $wrapper: JQuery;
         options: any;

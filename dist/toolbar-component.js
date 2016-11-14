@@ -30,6 +30,43 @@ var IIIFComponents;
 
 var IIIFComponents;
 (function (IIIFComponents) {
+    function color(state, action) {
+        if (state === void 0) { state = 'red'; }
+        switch (action.type) {
+            case IIIFComponents.CHANGE_COLOR:
+                return action.color;
+            default:
+                return state;
+        }
+    }
+    IIIFComponents.color = color;
+})(IIIFComponents || (IIIFComponents = {}));
+
+var IIIFComponents;
+(function (IIIFComponents) {
+    function count(state, action) {
+        if (state === void 0) { state = 0; }
+        switch (action.type) {
+            case IIIFComponents.GROW:
+                return state + action.incrementBy;
+            //*
+            // Leaving this here for reference,
+            // in case you want to return an object
+            //*
+            //   return Object.assign({}, state, {
+            //     count: state + action.incrementBy
+            //   })
+            case IIIFComponents.RESET:
+                return 0;
+            default:
+                return state;
+        }
+    }
+    IIIFComponents.count = count;
+})(IIIFComponents || (IIIFComponents = {}));
+
+var IIIFComponents;
+(function (IIIFComponents) {
     var ToolbarButton = (function () {
         function ToolbarButton(options) {
             this.default_opts = {
@@ -83,38 +120,37 @@ var IIIFComponents;
             this.tree = this._render(initialState); // We need an initial tree
             this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
             document.body.appendChild(this.rootNode); // ... and it should be in the document
-            function count(state, action) {
-                if (state === void 0) { state = 0; }
-                switch (action.type) {
-                    case IIIFComponents.GROW:
-                        return state + action.incrementBy;
-                    //*
-                    // Leaving this here for reference,
-                    // in case you want to return an object
-                    //*
-                    //   return Object.assign({}, state, {
-                    //     count: state + action.incrementBy
-                    //   })
-                    case IIIFComponents.RESET:
-                        return 0;
-                    default:
-                        return state;
-                }
-            }
-            function color(state, action) {
-                if (state === void 0) { state = 'red'; }
-                switch (action.type) {
-                    case IIIFComponents.CHANGE_COLOR:
-                        return action.color;
-                    default:
-                        return state;
-                }
-            }
+            // function count(state = 0, action) {
+            //   switch (action.type) {
+            //     case GROW:
+            //       return state + action.incrementBy
+            //     //*
+            //     // Leaving this here for reference,
+            //     // in case you want to return an object
+            //     //*
+            //     //   return Object.assign({}, state, {
+            //     //     count: state + action.incrementBy
+            //     //   })
+            //     case RESET:
+            //       return 0
+            //     default:
+            //       return state
+            //   }
+            // }
+            //
+            // function color(state = 'red', action) {
+            //   switch (action.type) {
+            //     case CHANGE_COLOR:
+            //       return action.color
+            //     default:
+            //       return state
+            //   }
+            // }
             function app(state, action) {
                 if (state === void 0) { state = initialState; }
                 return {
-                    count: count(state.count, action),
-                    color: color(state.color, action)
+                    count: IIIFComponents.count(state.count, action),
+                    color: IIIFComponents.color(state.color, action)
                 };
             }
             this._store = Redux.createStore(app);
@@ -150,7 +186,6 @@ var IIIFComponents;
             var patches = diff(this.tree, newTree);
             this.rootNode = patch(this.rootNode, patches);
             this.tree = newTree;
-            // console.log(store.getState());
             this.stateChanged(this._store.getState()); //fire event
         };
         ToolbarComponent.prototype._getDefaultOptions = function () {

@@ -39,34 +39,7 @@ namespace IIIFComponents {
             this.rootNode = createElement(this.tree);     // Create an initial root DOM node ...
             document.body.appendChild(this.rootNode);    // ... and it should be in the document
 
-
-            function count(state = 0, action) {
-              switch (action.type) {
-                case GROW:
-                  return state + action.incrementBy
-                //*
-                // Leaving this here for reference,
-                // in case you want to return an object
-                //*
-                //   return Object.assign({}, state, {
-                //     count: state + action.incrementBy
-                //   })
-                case RESET:
-                  return 0
-                default:
-                  return state
-              }
-            }
-
-            function color(state = 'red', action) {
-              switch (action.type) {
-                case CHANGE_COLOR:
-                  return action.color
-                default:
-                  return state
-              }
-            }
-
+            // main reducer
             function app(state = initialState, action) {
                 return {
                   count: count(state.count, action),
