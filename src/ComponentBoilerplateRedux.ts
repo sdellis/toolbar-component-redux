@@ -55,12 +55,12 @@ namespace IIIFComponents {
 
             // Add Event Listeners
             // Note: The only way to mutate the internal state is to dispatch an action.
-
+            var that = this;
             $('#grow10').click(() => this._store.dispatch(grow(10)));
             $('#grow50').click(() => this._store.dispatch(grow(50)));
             $('#reset').click(() => this._store.dispatch(reset()));
             $('input[type=radio][name=color]').change(function() {
-                this._store.dispatch(changeColor(this.value));
+                that._store.dispatch(changeColor(this.value));
             });
 
             return success;
