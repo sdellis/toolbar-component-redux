@@ -1,11 +1,11 @@
-# component-boilerplate
+# component-boilerplate-redux
 
-http://viewdir.github.io/component-boilerplate/examples/
+http://viewdir.github.io/component-boilerplate-redux/examples/
 
     npm install
-    
+
     gulp
-    
+
     gulp examples
     
 ##Notes
