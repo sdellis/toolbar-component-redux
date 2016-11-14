@@ -1,5 +1,5 @@
 {
-  "name": "toolbar-component",
+  "name": "component-boilerplate-redux",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -37,7 +37,6 @@
   },
   "dependencies": {
     "core-js": "^2.4.1",
-    "es6-object-assign": "^1.0.3",
     "virtual-dom": "^2.1.1"
   }
 }

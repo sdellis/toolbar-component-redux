@@ -6,16 +6,16 @@ var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 
 namespace IIIFComponents {
-    export class ToolbarComponent extends _Components.BaseComponent {
+    export class ComponentBoilerplateRedux extends _Components.BaseComponent {
 
-        public options: IToolbarComponentOptions;
+        public options: IComponentBoilerplateReduxOptions;
         public rootNode: any;
         public tree: any;
         private _store: any;
         private _$toolbar: JQuery;
         private _buttons: any[];
 
-        constructor(options: IToolbarComponentOptions) {
+        constructor(options: IComponentBoilerplateReduxOptions) {
             super(options);
 
             this._init();
@@ -23,7 +23,7 @@ namespace IIIFComponents {
         }
 
         public stateChanged(new_state): void {
-            this._emit(ToolbarComponent.Events.STATECHANGED, new_state);
+            this._emit(ComponentBoilerplateRedux.Events.STATECHANGED, new_state);
         }
 
         protected _init(): boolean {
@@ -34,7 +34,7 @@ namespace IIIFComponents {
             }
 
             // Initialise the state and document/view
-            const initialState = { count: 0, color: 'red' };      // We need some app data.
+            const initialState = { count: this.options.size, color: this.options.color };      // We need some app data.
             this.tree = this._render(initialState);               // We need an initial tree
             this.rootNode = createElement(this.tree);     // Create an initial root DOM node ...
             document.body.appendChild(this.rootNode);    // ... and it should be in the document
@@ -55,12 +55,12 @@ namespace IIIFComponents {
 
             // Add Event Listeners
             // Note: The only way to mutate the internal state is to dispatch an action.
-
+            var that = this;
             $('#grow10').click(() => this._store.dispatch(grow(10)));
             $('#grow50').click(() => this._store.dispatch(grow(50)));
             $('#reset').click(() => this._store.dispatch(reset()));
             $('input[type=radio][name=color]').change(function() {
-                this._store.dispatch(changeColor(this.value));
+                that._store.dispatch(changeColor(this.value));
             });
 
             return success;
@@ -74,8 +74,8 @@ namespace IIIFComponents {
                     margin: '50px',
                     lineHeight: (100 + state.count) + 'px',
                     border: '1px solid ' + state.color,
-                    width: (100 + state.count) + 'px',
-                    height: (100 + state.count) + 'px'
+                    width: (this.options.size + state.count) + 'px',
+                    height: (this.options.size + state.count) + 'px'
                 }
             }, [String(state.count)]);
         }
@@ -89,11 +89,10 @@ namespace IIIFComponents {
             this.stateChanged(this._store.getState()); //fire event
         }
 
-        protected _getDefaultOptions(): IToolbarComponentOptions {
-            return <IToolbarComponentOptions>{
-                orientation: "vertical",
-                buttons: ["easy"],
-                hidden: false
+        protected _getDefaultOptions(): IComponentBoilerplateReduxOptions {
+            return <IComponentBoilerplateReduxOptions>{
+                color: "red",
+                size: 100
             }
         }
 
@@ -103,7 +102,7 @@ namespace IIIFComponents {
     }
 }
 
-namespace IIIFComponents.ToolbarComponent {
+namespace IIIFComponents.ComponentBoilerplateRedux {
     export class Events {
         static STATECHANGED: string = 'stateChanged';
     }
@@ -113,6 +112,6 @@ namespace IIIFComponents.ToolbarComponent {
     if (!w.IIIFComponents){
         w.IIIFComponents = IIIFComponents;
     } else {
-        w.IIIFComponents.ToolbarComponent = IIIFComponents.ToolbarComponent;
+        w.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
     }
 })(window);

@@ -1,5 +1,5 @@
-// toolbar-component v1.0.0 https://github.com/viewdir/component-boilerplate#readme
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.toolbarComponent = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// component-boilerplate-redux v1.0.0 https://github.com/viewdir/component-boilerplate#readme
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.componentBoilerplateRedux = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 //import * as actionTypes from './ActionTypes';
 var IIIFComponents;
 (function (IIIFComponents) {
@@ -25,6 +25,118 @@ var IIIFComponents;
     IIIFComponents.RESET = 'RESET';
     IIIFComponents.CHANGE_COLOR = 'CHANGE_COLOR';
 })(IIIFComponents || (IIIFComponents = {}));
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Redux = require('redux');
+require('virtual-dom/h');
+var h = require('virtual-dom/h');
+var diff = require('virtual-dom/diff');
+var patch = require('virtual-dom/patch');
+var createElement = require('virtual-dom/create-element');
+var IIIFComponents;
+(function (IIIFComponents) {
+    var ComponentBoilerplateRedux = (function (_super) {
+        __extends(ComponentBoilerplateRedux, _super);
+        function ComponentBoilerplateRedux(options) {
+            _super.call(this, options);
+            this._init();
+            this._resize();
+        }
+        ComponentBoilerplateRedux.prototype.stateChanged = function (new_state) {
+            this._emit(ComponentBoilerplateRedux.Events.STATECHANGED, new_state);
+        };
+        ComponentBoilerplateRedux.prototype._init = function () {
+            var _this = this;
+            var success = _super.prototype._init.call(this);
+            if (!success) {
+                console.error("Component failed to initialise");
+            }
+            // Initialise the state and document/view
+            var initialState = { count: this.options.size, color: this.options.color }; // We need some app data.
+            this.tree = this._render(initialState); // We need an initial tree
+            this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
+            document.body.appendChild(this.rootNode); // ... and it should be in the document
+            // main reducer
+            function app(state, action) {
+                if (state === void 0) { state = initialState; }
+                return {
+                    count: IIIFComponents.count(state.count, action),
+                    color: IIIFComponents.color(state.color, action)
+                };
+            }
+            this._store = Redux.createStore(app);
+            var unsubscribe = this._store.subscribe(function () {
+                return _this._updateView();
+            });
+            // Add Event Listeners
+            // Note: The only way to mutate the internal state is to dispatch an action.
+            var that = this;
+            $('#grow10').click(function () { return _this._store.dispatch(IIIFComponents.grow(10)); });
+            $('#grow50').click(function () { return _this._store.dispatch(IIIFComponents.grow(50)); });
+            $('#reset').click(function () { return _this._store.dispatch(IIIFComponents.reset()); });
+            $('input[type=radio][name=color]').change(function () {
+                that._store.dispatch(IIIFComponents.changeColor(this.value));
+            });
+            return success;
+        };
+        // Create a function that declares what the DOM should look like
+        ComponentBoilerplateRedux.prototype._render = function (state) {
+            return h('div', {
+                style: {
+                    textAlign: 'center',
+                    margin: '50px',
+                    lineHeight: (100 + state.count) + 'px',
+                    border: '1px solid ' + state.color,
+                    width: (this.options.size + state.count) + 'px',
+                    height: (this.options.size + state.count) + 'px'
+                }
+            }, [String(state.count)]);
+        };
+        // where we update the template
+        ComponentBoilerplateRedux.prototype._updateView = function () {
+            var newTree = this._render(this._store.getState());
+            var patches = diff(this.tree, newTree);
+            this.rootNode = patch(this.rootNode, patches);
+            this.tree = newTree;
+            this.stateChanged(this._store.getState()); //fire event
+        };
+        ComponentBoilerplateRedux.prototype._getDefaultOptions = function () {
+            return {
+                color: "red",
+                size: 100
+            };
+        };
+        ComponentBoilerplateRedux.prototype._resize = function () {
+        };
+        return ComponentBoilerplateRedux;
+    }(_Components.BaseComponent));
+    IIIFComponents.ComponentBoilerplateRedux = ComponentBoilerplateRedux;
+})(IIIFComponents || (IIIFComponents = {}));
+var IIIFComponents;
+(function (IIIFComponents) {
+    var ComponentBoilerplateRedux;
+    (function (ComponentBoilerplateRedux) {
+        var Events = (function () {
+            function Events() {
+            }
+            Events.STATECHANGED = 'stateChanged';
+            return Events;
+        }());
+        ComponentBoilerplateRedux.Events = Events;
+    })(ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux || (IIIFComponents.ComponentBoilerplateRedux = {}));
+})(IIIFComponents || (IIIFComponents = {}));
+(function (w) {
+    if (!w.IIIFComponents) {
+        w.IIIFComponents = IIIFComponents;
+    }
+    else {
+        w.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
+    }
+})(window);
 
 
 
@@ -64,164 +176,6 @@ var IIIFComponents;
     }
     IIIFComponents.count = count;
 })(IIIFComponents || (IIIFComponents = {}));
-
-var IIIFComponents;
-(function (IIIFComponents) {
-    var ToolbarButton = (function () {
-        function ToolbarButton(options) {
-            this.default_opts = {
-                label: "easy",
-                icon: "e",
-                selected: false,
-                disabled: false
-            };
-            this.options = $.extend(this.default_opts, options);
-            this.label = this.options.label;
-            this.icon = this.options.icon;
-            this.selected = this.options.selected;
-            this.disabled = this.options.disabled;
-        }
-        return ToolbarButton;
-    }());
-    IIIFComponents.ToolbarButton = ToolbarButton;
-})(IIIFComponents || (IIIFComponents = {}));
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Redux = require('redux');
-require('virtual-dom/h');
-var h = require('virtual-dom/h');
-var diff = require('virtual-dom/diff');
-var patch = require('virtual-dom/patch');
-var createElement = require('virtual-dom/create-element');
-var IIIFComponents;
-(function (IIIFComponents) {
-    var ToolbarComponent = (function (_super) {
-        __extends(ToolbarComponent, _super);
-        function ToolbarComponent(options) {
-            _super.call(this, options);
-            this._init();
-            this._resize();
-        }
-        ToolbarComponent.prototype.stateChanged = function (new_state) {
-            this._emit(ToolbarComponent.Events.STATECHANGED, new_state);
-        };
-        ToolbarComponent.prototype._init = function () {
-            var _this = this;
-            var success = _super.prototype._init.call(this);
-            if (!success) {
-                console.error("Component failed to initialise");
-            }
-            // Initialise the state and document/view
-            var initialState = { count: 0, color: 'red' }; // We need some app data.
-            this.tree = this._render(initialState); // We need an initial tree
-            this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
-            document.body.appendChild(this.rootNode); // ... and it should be in the document
-            // function count(state = 0, action) {
-            //   switch (action.type) {
-            //     case GROW:
-            //       return state + action.incrementBy
-            //     //*
-            //     // Leaving this here for reference,
-            //     // in case you want to return an object
-            //     //*
-            //     //   return Object.assign({}, state, {
-            //     //     count: state + action.incrementBy
-            //     //   })
-            //     case RESET:
-            //       return 0
-            //     default:
-            //       return state
-            //   }
-            // }
-            //
-            // function color(state = 'red', action) {
-            //   switch (action.type) {
-            //     case CHANGE_COLOR:
-            //       return action.color
-            //     default:
-            //       return state
-            //   }
-            // }
-            function app(state, action) {
-                if (state === void 0) { state = initialState; }
-                return {
-                    count: IIIFComponents.count(state.count, action),
-                    color: IIIFComponents.color(state.color, action)
-                };
-            }
-            this._store = Redux.createStore(app);
-            var unsubscribe = this._store.subscribe(function () {
-                return _this._updateView();
-            });
-            // Add Event Listeners
-            // Note: The only way to mutate the internal state is to dispatch an action.
-            $('#grow10').click(function () { return _this._store.dispatch(IIIFComponents.grow(10)); });
-            $('#grow50').click(function () { return _this._store.dispatch(IIIFComponents.grow(50)); });
-            $('#reset').click(function () { return _this._store.dispatch(IIIFComponents.reset()); });
-            $('input[type=radio][name=color]').change(function () {
-                this._store.dispatch(IIIFComponents.changeColor(this.value));
-            });
-            return success;
-        };
-        // Create a function that declares what the DOM should look like
-        ToolbarComponent.prototype._render = function (state) {
-            return h('div', {
-                style: {
-                    textAlign: 'center',
-                    margin: '50px',
-                    lineHeight: (100 + state.count) + 'px',
-                    border: '1px solid ' + state.color,
-                    width: (100 + state.count) + 'px',
-                    height: (100 + state.count) + 'px'
-                }
-            }, [String(state.count)]);
-        };
-        // where we update the template
-        ToolbarComponent.prototype._updateView = function () {
-            var newTree = this._render(this._store.getState());
-            var patches = diff(this.tree, newTree);
-            this.rootNode = patch(this.rootNode, patches);
-            this.tree = newTree;
-            this.stateChanged(this._store.getState()); //fire event
-        };
-        ToolbarComponent.prototype._getDefaultOptions = function () {
-            return {
-                orientation: "vertical",
-                buttons: ["easy"],
-                hidden: false
-            };
-        };
-        ToolbarComponent.prototype._resize = function () {
-        };
-        return ToolbarComponent;
-    }(_Components.BaseComponent));
-    IIIFComponents.ToolbarComponent = ToolbarComponent;
-})(IIIFComponents || (IIIFComponents = {}));
-var IIIFComponents;
-(function (IIIFComponents) {
-    var ToolbarComponent;
-    (function (ToolbarComponent) {
-        var Events = (function () {
-            function Events() {
-            }
-            Events.STATECHANGED = 'stateChanged';
-            return Events;
-        }());
-        ToolbarComponent.Events = Events;
-    })(ToolbarComponent = IIIFComponents.ToolbarComponent || (IIIFComponents.ToolbarComponent = {}));
-})(IIIFComponents || (IIIFComponents = {}));
-(function (w) {
-    if (!w.IIIFComponents) {
-        w.IIIFComponents = IIIFComponents;
-    }
-    else {
-        w.IIIFComponents.ToolbarComponent = IIIFComponents.ToolbarComponent;
-    }
-})(window);
 
 },{"redux":15,"virtual-dom/create-element":30,"virtual-dom/diff":31,"virtual-dom/h":32,"virtual-dom/patch":33}],2:[function(require,module,exports){
 
@@ -334,101 +288,6 @@ module.exports = (function split(undef) {
 })();
 
 },{}],4:[function(require,module,exports){
-'use strict';
-
-var OneVersionConstraint = require('individual/one-version');
-
-var MY_VERSION = '7';
-OneVersionConstraint('ev-store', MY_VERSION);
-
-var hashKey = '__EV_STORE_KEY@' + MY_VERSION;
-
-module.exports = EvStore;
-
-function EvStore(elem) {
-    var hash = elem[hashKey];
-
-    if (!hash) {
-        hash = elem[hashKey] = {};
-    }
-
-    return hash;
-}
-
-},{"individual/one-version":7}],5:[function(require,module,exports){
-(function (global){
-var topLevel = typeof global !== 'undefined' ? global :
-    typeof window !== 'undefined' ? window : {}
-var minDoc = require('min-document');
-
-if (typeof document !== 'undefined') {
-    module.exports = document;
-} else {
-    var doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'];
-
-    if (!doccy) {
-        doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'] = minDoc;
-    }
-
-    module.exports = doccy;
-}
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":2}],6:[function(require,module,exports){
-(function (global){
-'use strict';
-
-/*global window, global*/
-
-var root = typeof window !== 'undefined' ?
-    window : typeof global !== 'undefined' ?
-    global : {};
-
-module.exports = Individual;
-
-function Individual(key, value) {
-    if (key in root) {
-        return root[key];
-    }
-
-    root[key] = value;
-
-    return value;
-}
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
-'use strict';
-
-var Individual = require('./index.js');
-
-module.exports = OneVersion;
-
-function OneVersion(moduleName, version, defaultValue) {
-    var key = '__INDIVIDUAL_ONE_VERSION_' + moduleName;
-    var enforceKey = key + '_ENFORCE_SINGLETON';
-
-    var versionValue = Individual(enforceKey, version);
-
-    if (versionValue !== version) {
-        throw new Error('Can only have one copy of ' +
-            moduleName + '.\n' +
-            'You already have version ' + versionValue +
-            ' installed.\n' +
-            'This means you cannot install version ' + version);
-    }
-
-    return Individual(key, defaultValue);
-}
-
-},{"./index.js":6}],8:[function(require,module,exports){
-"use strict";
-
-module.exports = function isObject(x) {
-	return typeof x === "object" && x !== null;
-};
-
-},{}],9:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -609,6 +468,101 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+var OneVersionConstraint = require('individual/one-version');
+
+var MY_VERSION = '7';
+OneVersionConstraint('ev-store', MY_VERSION);
+
+var hashKey = '__EV_STORE_KEY@' + MY_VERSION;
+
+module.exports = EvStore;
+
+function EvStore(elem) {
+    var hash = elem[hashKey];
+
+    if (!hash) {
+        hash = elem[hashKey] = {};
+    }
+
+    return hash;
+}
+
+},{"individual/one-version":8}],6:[function(require,module,exports){
+(function (global){
+var topLevel = typeof global !== 'undefined' ? global :
+    typeof window !== 'undefined' ? window : {}
+var minDoc = require('min-document');
+
+if (typeof document !== 'undefined') {
+    module.exports = document;
+} else {
+    var doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'];
+
+    if (!doccy) {
+        doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'] = minDoc;
+    }
+
+    module.exports = doccy;
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"min-document":2}],7:[function(require,module,exports){
+(function (global){
+'use strict';
+
+/*global window, global*/
+
+var root = typeof window !== 'undefined' ?
+    window : typeof global !== 'undefined' ?
+    global : {};
+
+module.exports = Individual;
+
+function Individual(key, value) {
+    if (key in root) {
+        return root[key];
+    }
+
+    root[key] = value;
+
+    return value;
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],8:[function(require,module,exports){
+'use strict';
+
+var Individual = require('./index.js');
+
+module.exports = OneVersion;
+
+function OneVersion(moduleName, version, defaultValue) {
+    var key = '__INDIVIDUAL_ONE_VERSION_' + moduleName;
+    var enforceKey = key + '_ENFORCE_SINGLETON';
+
+    var versionValue = Individual(enforceKey, version);
+
+    if (versionValue !== version) {
+        throw new Error('Can only have one copy of ' +
+            moduleName + '.\n' +
+            'You already have version ' + versionValue +
+            ' installed.\n' +
+            'This means you cannot install version ' + version);
+    }
+
+    return Individual(key, defaultValue);
+}
+
+},{"./index.js":7}],9:[function(require,module,exports){
+"use strict";
+
+module.exports = function isObject(x) {
+	return typeof x === "object" && x !== null;
+};
 
 },{}],10:[function(require,module,exports){
 'use strict';
@@ -866,7 +820,7 @@ function combineReducers(reducers) {
   };
 }
 }).call(this,require('_process'))
-},{"./createStore":14,"./utils/warning":16,"_process":9,"lodash/isPlainObject":26}],13:[function(require,module,exports){
+},{"./createStore":14,"./utils/warning":16,"_process":4,"lodash/isPlainObject":26}],13:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1216,7 +1170,7 @@ exports.bindActionCreators = _bindActionCreators2['default'];
 exports.applyMiddleware = _applyMiddleware2['default'];
 exports.compose = _compose2['default'];
 }).call(this,require('_process'))
-},{"./applyMiddleware":10,"./bindActionCreators":11,"./combineReducers":12,"./compose":13,"./createStore":14,"./utils/warning":16,"_process":9}],16:[function(require,module,exports){
+},{"./applyMiddleware":10,"./bindActionCreators":11,"./combineReducers":12,"./compose":13,"./createStore":14,"./utils/warning":16,"_process":4}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1670,7 +1624,7 @@ function getPrototype(value) {
     }
 }
 
-},{"../vnode/is-vhook.js":46,"is-object":8}],35:[function(require,module,exports){
+},{"../vnode/is-vhook.js":46,"is-object":9}],35:[function(require,module,exports){
 var document = require("global/document")
 
 var applyProperties = require("./apply-properties")
@@ -1718,7 +1672,7 @@ function createElement(vnode, opts) {
     return node
 }
 
-},{"../vnode/handle-thunk.js":44,"../vnode/is-vnode.js":47,"../vnode/is-vtext.js":48,"../vnode/is-widget.js":49,"./apply-properties":34,"global/document":5}],36:[function(require,module,exports){
+},{"../vnode/handle-thunk.js":44,"../vnode/is-vnode.js":47,"../vnode/is-vtext.js":48,"../vnode/is-widget.js":49,"./apply-properties":34,"global/document":6}],36:[function(require,module,exports){
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
 // We don't want to read all of the DOM nodes in the tree so we use
 // the in-order tree indexing to eliminate recursion down certain branches.
@@ -2040,7 +1994,7 @@ function patchIndices(patches) {
     return indices
 }
 
-},{"./create-element":35,"./dom-index":36,"./patch-op":37,"global/document":5,"x-is-array":56}],39:[function(require,module,exports){
+},{"./create-element":35,"./dom-index":36,"./patch-op":37,"global/document":6,"x-is-array":56}],39:[function(require,module,exports){
 var isWidget = require("../vnode/is-widget.js")
 
 module.exports = updateWidget
@@ -2086,7 +2040,7 @@ EvHook.prototype.unhook = function(node, propertyName) {
     es[propName] = undefined;
 };
 
-},{"ev-store":4}],41:[function(require,module,exports){
+},{"ev-store":5}],41:[function(require,module,exports){
 'use strict';
 
 module.exports = SoftSetHook;
@@ -2556,7 +2510,7 @@ function getPrototype(value) {
   }
 }
 
-},{"../vnode/is-vhook":46,"is-object":8}],55:[function(require,module,exports){
+},{"../vnode/is-vhook":46,"is-object":9}],55:[function(require,module,exports){
 var isArray = require("x-is-array")
 
 var VPatch = require("../vnode/vpatch")
