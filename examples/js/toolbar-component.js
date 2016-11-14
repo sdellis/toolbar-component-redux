@@ -30,6 +30,43 @@ var IIIFComponents;
 
 var IIIFComponents;
 (function (IIIFComponents) {
+    function color(state, action) {
+        if (state === void 0) { state = 'red'; }
+        switch (action.type) {
+            case IIIFComponents.CHANGE_COLOR:
+                return action.color;
+            default:
+                return state;
+        }
+    }
+    IIIFComponents.color = color;
+})(IIIFComponents || (IIIFComponents = {}));
+
+var IIIFComponents;
+(function (IIIFComponents) {
+    function count(state, action) {
+        if (state === void 0) { state = 0; }
+        switch (action.type) {
+            case IIIFComponents.GROW:
+                return state + action.incrementBy;
+            //*
+            // Leaving this here for reference,
+            // in case you want to return an object
+            //*
+            //   return Object.assign({}, state, {
+            //     count: state + action.incrementBy
+            //   })
+            case IIIFComponents.RESET:
+                return 0;
+            default:
+                return state;
+        }
+    }
+    IIIFComponents.count = count;
+})(IIIFComponents || (IIIFComponents = {}));
+
+var IIIFComponents;
+(function (IIIFComponents) {
     var ToolbarButton = (function () {
         function ToolbarButton(options) {
             this.default_opts = {
@@ -69,91 +106,87 @@ var IIIFComponents;
             this._init();
             this._resize();
         }
-        ToolbarComponent.prototype.test = function () {
-            this._emit(ToolbarComponent.Events.TEST, [1, 2, 'three']);
+        ToolbarComponent.prototype.stateChanged = function (new_state) {
+            this._emit(ToolbarComponent.Events.STATECHANGED, new_state);
         };
         ToolbarComponent.prototype._init = function () {
+            var _this = this;
             var success = _super.prototype._init.call(this);
             if (!success) {
                 console.error("Component failed to initialise");
             }
-            this._buttons = this.options.buttons;
-            // Create a function that declares what the DOM should look like
-            function render(state) {
-                return h('div', {
-                    style: {
-                        textAlign: 'center',
-                        margin: '50px',
-                        lineHeight: (100 + state.count) + 'px',
-                        border: '1px solid ' + state.color,
-                        width: (100 + state.count) + 'px',
-                        height: (100 + state.count) + 'px'
-                    }
-                }, [String(state.count)]);
-            }
             // Initialise the state and document/view
             var initialState = { count: 0, color: 'red' }; // We need some app data.
-            var tree = render(initialState); // We need an initial tree
-            var rootNode = createElement(tree); // Create an initial root DOM node ...
-            document.body.appendChild(rootNode); // ... and it should be in the document
-            function updateView() {
-                var newTree = render(store.getState());
-                var patches = diff(tree, newTree);
-                rootNode = patch(rootNode, patches);
-                tree = newTree;
-                console.log(store.getState());
-                // emit event
-            }
-            function count(state, action) {
-                if (state === void 0) { state = 0; }
-                switch (action.type) {
-                    case IIIFComponents.GROW:
-                        return state + action.incrementBy;
-                    //*
-                    // Leaving this here for reference,
-                    // in case you want to return an object
-                    //*
-                    //   return Object.assign({}, state, {
-                    //     count: state + action.incrementBy
-                    //   })
-                    case IIIFComponents.RESET:
-                        return 0;
-                    default:
-                        return state;
-                }
-            }
-            function color(state, action) {
-                if (state === void 0) { state = 'red'; }
-                switch (action.type) {
-                    case IIIFComponents.CHANGE_COLOR:
-                        return action.color;
-                    //   return Object.assign({}, state, {
-                    //     color: action.color
-                    //   })
-                    default:
-                        return state;
-                }
-            }
+            this.tree = this._render(initialState); // We need an initial tree
+            this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
+            document.body.appendChild(this.rootNode); // ... and it should be in the document
+            // function count(state = 0, action) {
+            //   switch (action.type) {
+            //     case GROW:
+            //       return state + action.incrementBy
+            //     //*
+            //     // Leaving this here for reference,
+            //     // in case you want to return an object
+            //     //*
+            //     //   return Object.assign({}, state, {
+            //     //     count: state + action.incrementBy
+            //     //   })
+            //     case RESET:
+            //       return 0
+            //     default:
+            //       return state
+            //   }
+            // }
+            //
+            // function color(state = 'red', action) {
+            //   switch (action.type) {
+            //     case CHANGE_COLOR:
+            //       return action.color
+            //     default:
+            //       return state
+            //   }
+            // }
             function app(state, action) {
                 if (state === void 0) { state = initialState; }
                 return {
-                    count: count(state.count, action),
-                    color: color(state.color, action)
+                    count: IIIFComponents.count(state.count, action),
+                    color: IIIFComponents.color(state.color, action)
                 };
             }
-            var store = Redux.createStore(app);
-            var unsubscribe = store.subscribe(function () {
-                return updateView();
+            this._store = Redux.createStore(app);
+            var unsubscribe = this._store.subscribe(function () {
+                return _this._updateView();
             });
             // Add Event Listeners
             // Note: The only way to mutate the internal state is to dispatch an action.
-            $('#grow10').click(function () { return store.dispatch(IIIFComponents.grow(10)); });
-            $('#grow50').click(function () { return store.dispatch(IIIFComponents.grow(50)); });
-            $('#reset').click(function () { return store.dispatch(IIIFComponents.reset()); });
+            $('#grow10').click(function () { return _this._store.dispatch(IIIFComponents.grow(10)); });
+            $('#grow50').click(function () { return _this._store.dispatch(IIIFComponents.grow(50)); });
+            $('#reset').click(function () { return _this._store.dispatch(IIIFComponents.reset()); });
             $('input[type=radio][name=color]').change(function () {
-                store.dispatch(IIIFComponents.changeColor(this.value));
+                this._store.dispatch(IIIFComponents.changeColor(this.value));
             });
             return success;
+        };
+        // Create a function that declares what the DOM should look like
+        ToolbarComponent.prototype._render = function (state) {
+            return h('div', {
+                style: {
+                    textAlign: 'center',
+                    margin: '50px',
+                    lineHeight: (100 + state.count) + 'px',
+                    border: '1px solid ' + state.color,
+                    width: (100 + state.count) + 'px',
+                    height: (100 + state.count) + 'px'
+                }
+            }, [String(state.count)]);
+        };
+        // where we update the template
+        ToolbarComponent.prototype._updateView = function () {
+            var newTree = this._render(this._store.getState());
+            var patches = diff(this.tree, newTree);
+            this.rootNode = patch(this.rootNode, patches);
+            this.tree = newTree;
+            this.stateChanged(this._store.getState()); //fire event
         };
         ToolbarComponent.prototype._getDefaultOptions = function () {
             return {
@@ -175,7 +208,7 @@ var IIIFComponents;
         var Events = (function () {
             function Events() {
             }
-            Events.TEST = 'test';
+            Events.STATECHANGED = 'stateChanged';
             return Events;
         }());
         ToolbarComponent.Events = Events;
