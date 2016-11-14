@@ -74,11 +74,12 @@ var IIIFComponents;
             });
             // Add Event Listeners
             // Note: The only way to mutate the internal state is to dispatch an action.
+            var that = this;
             $('#grow10').click(function () { return _this._store.dispatch(IIIFComponents.grow(10)); });
             $('#grow50').click(function () { return _this._store.dispatch(IIIFComponents.grow(50)); });
             $('#reset').click(function () { return _this._store.dispatch(IIIFComponents.reset()); });
             $('input[type=radio][name=color]').change(function () {
-                this._store.dispatch(IIIFComponents.changeColor(this.value));
+                that._store.dispatch(IIIFComponents.changeColor(this.value));
             });
             return success;
         };
