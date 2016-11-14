@@ -59,6 +59,14 @@ declare namespace IIIFComponents {
 }
 
 declare namespace IIIFComponents {
+    function color(state: string, action: any): any;
+}
+
+declare namespace IIIFComponents {
+    function count(state: number, action: any): any;
+}
+
+declare namespace IIIFComponents {
     class ToolbarButton {
         $wrapper: JQuery;
         options: any;
@@ -80,17 +88,22 @@ declare var createElement: any;
 declare namespace IIIFComponents {
     class ToolbarComponent extends _Components.BaseComponent {
         options: IToolbarComponentOptions;
+        rootNode: any;
+        tree: any;
+        private _store;
         private _$toolbar;
         private _buttons;
         constructor(options: IToolbarComponentOptions);
-        test(): void;
+        stateChanged(new_state: any): void;
         protected _init(): boolean;
+        private _render(state);
+        private _updateView();
         protected _getDefaultOptions(): IToolbarComponentOptions;
         protected _resize(): void;
     }
 }
 declare namespace IIIFComponents.ToolbarComponent {
     class Events {
-        static TEST: string;
+        static STATECHANGED: string;
     }
 }
