@@ -83,15 +83,6 @@ var IIIFComponents;
             this.tree = this._render(initialState); // We need an initial tree
             this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
             document.body.appendChild(this.rootNode); // ... and it should be in the document
-            //
-            // function updateView(){
-            //   var newTree = render(store.getState());
-            //   var patches = diff(tree, newTree);
-            //   this.rootNode = patch(rootNode, patches);
-            //   this.tree = newTree;
-            //   // console.log(store.getState());
-            //   this.stateChanged(store.getState()); //fire event
-            // }
             function count(state, action) {
                 if (state === void 0) { state = 0; }
                 switch (action.type) {
@@ -115,9 +106,6 @@ var IIIFComponents;
                 switch (action.type) {
                     case IIIFComponents.CHANGE_COLOR:
                         return action.color;
-                    //   return Object.assign({}, state, {
-                    //     color: action.color
-                    //   })
                     default:
                         return state;
                 }
@@ -129,14 +117,12 @@ var IIIFComponents;
                     color: color(state.color, action)
                 };
             }
-            let;
             this._store = Redux.createStore(app);
             var unsubscribe = this._store.subscribe(function () {
                 return _this._updateView();
             });
             // Add Event Listeners
             // Note: The only way to mutate the internal state is to dispatch an action.
-            var that = this;
             $('#grow10').click(function () { return _this._store.dispatch(IIIFComponents.grow(10)); });
             $('#grow50').click(function () { return _this._store.dispatch(IIIFComponents.grow(50)); });
             $('#reset').click(function () { return _this._store.dispatch(IIIFComponents.reset()); });

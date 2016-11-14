@@ -38,15 +38,7 @@ namespace IIIFComponents {
             this.tree = this._render(initialState);               // We need an initial tree
             this.rootNode = createElement(this.tree);     // Create an initial root DOM node ...
             document.body.appendChild(this.rootNode);    // ... and it should be in the document
-            //
-            // function updateView(){
-            //   var newTree = render(store.getState());
-            //   var patches = diff(tree, newTree);
-            //   this.rootNode = patch(rootNode, patches);
-            //   this.tree = newTree;
-            //   // console.log(store.getState());
-            //   this.stateChanged(store.getState()); //fire event
-            // }
+
 
             function count(state = 0, action) {
               switch (action.type) {
@@ -70,9 +62,6 @@ namespace IIIFComponents {
               switch (action.type) {
                 case CHANGE_COLOR:
                   return action.color
-                //   return Object.assign({}, state, {
-                //     color: action.color
-                //   })
                 default:
                   return state
               }
@@ -85,7 +74,7 @@ namespace IIIFComponents {
                 }
             }
 
-            let this._store = Redux.createStore(app);
+            this._store = Redux.createStore(app);
 
             let unsubscribe = this._store.subscribe(() =>
               this._updateView()
@@ -93,7 +82,7 @@ namespace IIIFComponents {
 
             // Add Event Listeners
             // Note: The only way to mutate the internal state is to dispatch an action.
-            var that = this;
+
             $('#grow10').click(() => this._store.dispatch(grow(10)));
             $('#grow50').click(() => this._store.dispatch(grow(50)));
             $('#reset').click(() => this._store.dispatch(reset()));
@@ -124,7 +113,6 @@ namespace IIIFComponents {
             var patches = diff(this.tree, newTree);
             this.rootNode = patch(this.rootNode, patches);
             this.tree = newTree;
-            // console.log(store.getState());
             this.stateChanged(this._store.getState()); //fire event
         }
 
