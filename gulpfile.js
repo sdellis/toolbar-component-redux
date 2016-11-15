@@ -10,3 +10,6 @@ gulp.task('default', function(cb) {
 });
 
 gulp.task('sync', ['copy:bundle', 'copy:css', 'copy:img', 'copy:typings']);
+
+// gulp.task('test', ['lint', 'mocha']);
+gulp.task('test', ['mocha']);
