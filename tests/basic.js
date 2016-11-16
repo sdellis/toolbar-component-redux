@@ -25,6 +25,11 @@ describe('boilerplateRedux', function() {
         jsdom.env({
           html: html,
           scripts: [component, "http://code.jquery.com/jquery.js"],
+          features: {
+                FetchExternalResources: ["script"],
+                ProcessExternalResources: ["script"],
+                SkipExternalResources: false
+            },
           done: function (err, window) {
             var $ = window.$;
             console.log("Buttons");
