@@ -59,7 +59,8 @@ var IIIFComponents;
             var initialState = { count: this.options.size, color: this.options.color }; // We need some app data.
             this.tree = this._render(initialState); // We need an initial tree
             this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
-            document.body.appendChild(this.rootNode); // ... and it should be in the document
+            //document.body.appendChild(this.rootNode);    // ... and it should be in the document
+            this._$element.append(this.rootNode);
             // main reducer
             function app(state, action) {
                 if (state === void 0) { state = initialState; }
