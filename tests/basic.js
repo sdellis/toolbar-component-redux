@@ -1,41 +1,54 @@
-// var component = require('../dist/component-boilerplate-redux.bundle');
-// var TinyEmitter = require('../node_modules/tiny-emitter/dist/tinyemitter')
-// var component = require('../examples/js/base-component.bundle');
-// var TinyEmitter;
-
 var expect = require('chai').expect;
 var should = require('chai').should();
+var fs = require("fs");
+// var component = require(__dirname + "/../dist/component-boilerplate-redux.bundle");
+var component = fs.readFileSync( __dirname + "/../dist/component-boilerplate-redux.bundle.js", "utf-8");
+var square = require("../dist/test");
+var html = fs.readFileSync(__dirname + '/../examples/index.html', 'utf8');
+var jsdom = require("jsdom");
 
 
-describe('#testTest', function() {
-    it('true should be true', function() {
-        expect(true).to.be.true;
+describe('test', function() {
+    it('returns a square root', function() {
+        expect(square(2)).to.equal(4);
     });
 });
 
-// var boilerplateRedux = new IIIFComponents.ComponentBoilerplateRedux({
-//     element: "#boilerplate-redux",
-//     color: "blue", // or "vertical"
-//     size: 100
-// });
-//
-// describe('#changesState', function() {
-//
-//     it('should fire an event', function(done) {
-//         var eventFired = false
-//         setTimeout(function () {
-//           assert(eventFired, 'Event did not fire in 1000 ms.');
-//           done();
-//         }, 1000); //timeout with an error in one second
-//
-//         boilerplateRedux.on('stateChanged', function(args) {
-//             eventFired = true
-//         });
-//
-//         // do something that should trigger the event
-//         boilerplateRedux._store.dispatch(grow(10));
-//
-//         expect(eventFired).to.be.true;
-//     });
-//
-// });
+describe('boilerplateRedux', function() {
+
+    it('is false', function() {
+        expect(false).to.be.true; // fails
+    });
+
+    it('mounts on DOM element', function() {
+
+        jsdom.env({
+          html: html,
+          scripts: [component, "http://code.jquery.com/jquery.js"],
+          done: function (err, window) {
+            var $ = window.$;
+            console.log("Buttons");
+            $(".btn").each(function() {
+              console.log(" -", $(this).text());
+            });
+            console.log("size: ");
+
+            // doesn't seem to work
+            var boilerplateRedux = new IIIFComponents.ComponentBoilerplateRedux({
+                    element: "#boilerplate-redux",
+                    color: "blue",
+                    size: 100
+                });
+
+            console.log("color: " + boilerplateRedux.options.color);
+            // ^^^ no output
+          }
+        });
+
+    });
+
+    it('true should be true', function() {
+        expect(true).to.be.true; // passes
+    });
+
+});

@@ -12,8 +12,6 @@ namespace IIIFComponents {
         public rootNode: any;
         public tree: any;
         private _store: any;
-        private _$toolbar: JQuery;
-        private _buttons: any[];
 
         constructor(options: IComponentBoilerplateReduxOptions) {
             super(options);
@@ -37,7 +35,8 @@ namespace IIIFComponents {
             const initialState = { count: this.options.size, color: this.options.color };      // We need some app data.
             this.tree = this._render(initialState);               // We need an initial tree
             this.rootNode = createElement(this.tree);     // Create an initial root DOM node ...
-            document.body.appendChild(this.rootNode);    // ... and it should be in the document
+            //document.body.appendChild(this.rootNode);    // ... and it should be in the document
+            this._$element.append(this.rootNode);
 
             // main reducer
             function app(state = initialState, action) {
