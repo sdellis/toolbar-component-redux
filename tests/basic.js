@@ -10,14 +10,14 @@ var jsdom = require("jsdom");
 
 describe('test', function() {
     it('returns a square root', function() {
-        expect(square(2)).to.equal(4);
+        expect(square(2)).to.equal(4); // <-- passes
     });
 });
 
 describe('boilerplateRedux', function() {
 
     it('is false', function() {
-        expect(false).to.be.true; // fails
+         expect(false).to.be.true; // <-- fails
     });
 
     it('mounts on DOM element', function() {
@@ -31,24 +31,16 @@ describe('boilerplateRedux', function() {
             $(".btn").each(function() {
               console.log(" -", $(this).text());
             });
-            console.log("size: ");
 
-            // doesn't seem to work
-            var boilerplateRedux = new IIIFComponents.ComponentBoilerplateRedux({
-                    element: "#boilerplate-redux",
-                    color: "blue",
-                    size: 100
-                });
+            expect(false).to.be.true; // <-- completely ignored
 
-            console.log("color: " + boilerplateRedux.options.color);
-            // ^^^ no output
           }
         });
 
     });
 
     it('true should be true', function() {
-        expect(true).to.be.true; // passes
+        expect(true).to.be.true; // <-- passes
     });
 
 });
