@@ -62,8 +62,6 @@ declare namespace IIIFComponents {
         rootNode: any;
         tree: any;
         private _store;
-        private _$toolbar;
-        private _buttons;
         constructor(options: IComponentBoilerplateReduxOptions);
         stateChanged(new_state: any): void;
         protected _init(): boolean;
