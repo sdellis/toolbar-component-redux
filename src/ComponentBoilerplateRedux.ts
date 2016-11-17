@@ -20,6 +20,7 @@ namespace IIIFComponents {
             this._resize();
         }
 
+        // events
         public stateChanged(new_state): void {
             this._emit(ComponentBoilerplateRedux.Events.STATECHANGED, new_state);
         }
@@ -62,7 +63,18 @@ namespace IIIFComponents {
                 that._store.dispatch(changeColor(this.value));
             });
 
+            // $('#color-buttons > label').on('click', (event) => {
+            //     event.stopPropagation();
+            //     event.preventDefault();
+            //     that._store.dispatch(changeColor($(event.currentTarget).children("input").val()));
+            // });
+
+
             return success;
+        }
+
+        public getState(): any {
+            return this._store.getState();
         }
 
         // Create a function that declares what the DOM should look like
@@ -81,11 +93,12 @@ namespace IIIFComponents {
 
         // where we update the template
         private _updateView(): void {
-            var newTree = this._render(this._store.getState());
+            var newState = this._store.getState();
+            var newTree = this._render(newState);
             var patches = diff(this.tree, newTree);
             this.rootNode = patch(this.rootNode, patches);
             this.tree = newTree;
-            this.stateChanged(this._store.getState()); //fire event
+            this.stateChanged(newState); //fire event
         }
 
         protected _getDefaultOptions(): IComponentBoilerplateReduxOptions {

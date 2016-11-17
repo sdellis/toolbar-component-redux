@@ -1,51 +1,125 @@
 var expect = require('chai').expect;
 var should = require('chai').should();
-var fs = require("fs");
-// var component = require(__dirname + "/../dist/component-boilerplate-redux.bundle");
-var component = fs.readFileSync( __dirname + "/../dist/component-boilerplate-redux.bundle.js", "utf-8");
-var square = require("../dist/test");
-var html = fs.readFileSync(__dirname + '/../examples/index.html', 'utf8');
+var path = require("path");
+var square = require("../examples/js/square");
+var html = path.join(__dirname,'../examples/index.html');
 var jsdom = require("jsdom");
 
-
+// this is an example of unit testing a basic commonjs module
 describe('test', function() {
     it('returns a square root', function() {
         expect(square(2)).to.equal(4); // <-- passes
     });
 });
 
+// this is an example of testing the component in the "browser"
 describe('boilerplateRedux', function() {
 
-    it('is false', function() {
-         expect(false).to.be.true; // <-- fails
-    });
+    // outline our tests
+    var foo = false,
+        size,
+        color,
+        initialState,
+        stateHistory = [],
+        grow10State,
+        grow50State,
+        resetState,
+        greenState, // var to determine if component color Action works
+        mountsDOM; // var to determine if component mounts on DOM
 
-    it('mounts on DOM element', function() {
+    beforeEach(function(done){
 
         jsdom.env({
-          html: html,
-          scripts: [component, "http://code.jquery.com/jquery.js"],
+          file: html,
+          //scripts: ["http://code.jquery.com/jquery.js", "https://viewdir.github.io/component-boilerplate-redux/examples/js/base-component.bundle.js", "https://viewdir.github.io/component-boilerplate-redux/examples/js/component-boilerplate-redux.js"],
           features: {
                 FetchExternalResources: ["script"],
                 ProcessExternalResources: ["script"],
-                SkipExternalResources: false
+                SkipExternalResources: false,
+                MutationEvents           : '2.0'
             },
           done: function (err, window) {
             var $ = window.$;
-            console.log("Buttons");
-            $(".btn").each(function() {
-              console.log(" -", $(this).text());
+
+            var boilerplateRedux = new window.IIIFComponents.ComponentBoilerplateRedux({
+                    element: "#boilerplate-redux",
+                    color: "blue",
+                    size: 100
+                });
+
+            foo = true;
+            size = boilerplateRedux.options.size;
+            color = boilerplateRedux.options.color;
+            initialState = boilerplateRedux.getState();
+
+            $( "#grow10" ).trigger( "click" );
+            grow10State = boilerplateRedux.getState();
+            $( "#grow50" ).trigger( "click" );
+            grow50State = boilerplateRedux.getState();
+            $( "#reset" ).trigger( "click" );
+            resetState = boilerplateRedux.getState();
+
+            // doesn't work
+            $( "#green" ).prop( "checked", true );
+            greenState = boilerplateRedux.getState();
+
+            // doesn't work - may need to be async
+            boilerplateRedux.on('stateChanged', function(args) {
+                stateHistory.push(args[0]);
+                console.log("foo!");
             });
 
-            expect(false).to.be.true; // <-- completely ignored
+            mountsDOM = $( "#boilerplate-redux > div" ).length;
 
+            done();
           }
         });
 
     });
 
-    it('true should be true', function() {
-        expect(true).to.be.true; // <-- passes
+    /*//////////
+    // tests
+    *///////////
+
+    it('mounts on DOM element', function() {
+        expect(mountsDOM).to.equal(1);
+    });
+
+    it('has a size option of 100', function() {
+        expect(size).to.equal(100);
+    });
+
+    it('has a color option of blue', function() {
+        expect(color).to.equal("blue");
+    });
+
+    it('has an initial state determined by options', function() {
+        expect(initialState.color).to.equal("blue");
+        expect(initialState.count).to.equal(100);
+    });
+
+    it('count increases by 10 when GROW Action is dispatched with a param of 10', function() {
+        expect(grow10State.count).to.equal(110);
+    });
+
+    it('count increases by 50 when GROW Action is dispatched with a param of 50', function() {
+        expect(grow50State.count).to.equal(160);
+    });
+
+    it('count resets when RESET Action is dispatched', function() {
+        expect(resetState.count).to.equal(0);
+    });
+
+    it('color changes to green when COLOR Action is dispatched with a param of "green"', function() {
+        expect(greenState.color).to.equal("green");
+    });
+
+    it('fires an event whenever the state changes', function() {
+        expect(stateHistory[0]).to.equal(grow10State);
+    });
+
+    it('foo should be true', function() {
+        expect(foo).to.be.true; // <-- passes
     });
 
 });

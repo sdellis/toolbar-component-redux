@@ -46,6 +46,7 @@ var IIIFComponents;
             this._init();
             this._resize();
         }
+        // events
         ComponentBoilerplateRedux.prototype.stateChanged = function (new_state) {
             this._emit(ComponentBoilerplateRedux.Events.STATECHANGED, new_state);
         };
@@ -82,7 +83,15 @@ var IIIFComponents;
             $('input[type=radio][name=color]').change(function () {
                 that._store.dispatch(IIIFComponents.changeColor(this.value));
             });
+            // $('#color-buttons > label').on('click', (event) => {
+            //     event.stopPropagation();
+            //     event.preventDefault();
+            //     that._store.dispatch(changeColor($(event.currentTarget).children("input").val()));
+            // });
             return success;
+        };
+        ComponentBoilerplateRedux.prototype.getState = function () {
+            return this._store.getState();
         };
         // Create a function that declares what the DOM should look like
         ComponentBoilerplateRedux.prototype._render = function (state) {
@@ -99,11 +108,12 @@ var IIIFComponents;
         };
         // where we update the template
         ComponentBoilerplateRedux.prototype._updateView = function () {
-            var newTree = this._render(this._store.getState());
+            var newState = this._store.getState();
+            var newTree = this._render(newState);
             var patches = diff(this.tree, newTree);
             this.rootNode = patch(this.rootNode, patches);
             this.tree = newTree;
-            this.stateChanged(this._store.getState()); //fire event
+            this.stateChanged(newState); //fire event
         };
         ComponentBoilerplateRedux.prototype._getDefaultOptions = function () {
             return {

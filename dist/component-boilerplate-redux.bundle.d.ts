@@ -65,6 +65,7 @@ declare namespace IIIFComponents {
         constructor(options: IComponentBoilerplateReduxOptions);
         stateChanged(new_state: any): void;
         protected _init(): boolean;
+        getState(): any;
         private _render(state);
         private _updateView();
         protected _getDefaultOptions(): IComponentBoilerplateReduxOptions;
