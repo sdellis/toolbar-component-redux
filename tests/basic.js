@@ -16,22 +16,21 @@ describe('test', function() {
 describe('boilerplateRedux', function() {
 
     // outline our tests
-    var foo = false,
-        size,
-        color,
-        initialState,
-        stateHistory = [],
-        grow10State,
-        grow50State,
-        resetState,
-        greenState, // var to determine if component color Action works
+    var foo = false, // just a test var to make sure jsdom callback works
+        size, // var to determine if options can be set in config object
+        color, // var to determine if options can be set in config object
+        initialState, // var to determine if intial state is set by options
+        stateHistory = [], // var to determine if events are firing on state change
+        grow10State, // var to determine if component GROW Action works
+        grow50State, // var to determine if component GROW Action (with params) works
+        resetState, // var to determine if component RESET Action works
+        greenState, // var to determine if component COLOR Action works
         mountsDOM; // var to determine if component mounts on DOM
 
     beforeEach(function(done){
 
         jsdom.env({
           file: html,
-          //scripts: ["http://code.jquery.com/jquery.js", "https://viewdir.github.io/component-boilerplate-redux/examples/js/base-component.bundle.js", "https://viewdir.github.io/component-boilerplate-redux/examples/js/component-boilerplate-redux.js"],
           features: {
                 FetchExternalResources: ["script"],
                 ProcessExternalResources: ["script"],
