@@ -126,4 +126,4 @@ namespace IIIFComponents.ComponentBoilerplateRedux {
     } else {
         w.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
     }
-})(window);
+})(global);

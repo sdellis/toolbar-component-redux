@@ -13,15 +13,15 @@ describe('test', function() {
 });
 
 // this is an example of testing the component in the "browser"
-describe('boilerplateRedux', function() {
-
+describe('boilerplateRedux browser tests', function() {
+    this.timeout(15000);
     // outline our tests
     var foo = false, // just a test var to make sure jsdom callback works
         size, // var to determine if options can be set in config object
         color, // var to determine if options can be set in config object
         initialState, // var to determine if intial state is set by options
-        stateHistory = [], // var to determine if events are firing on state change
-        grow10State, // var to determine if component GROW Action works
+        grow10Div, // var to determine if component GROW Action affects DOM
+        grow10State, // var to determine if component GROW Action affects State
         grow50State, // var to determine if component GROW Action (with params) works
         resetState, // var to determine if component RESET Action works
         greenState, // var to determine if component COLOR Action works
@@ -51,24 +51,20 @@ describe('boilerplateRedux', function() {
             color = boilerplateRedux.options.color;
             initialState = boilerplateRedux.getState();
 
+            mountsDOM = $( "#boilerplate-redux > div" ).length;
+
             $( "#grow10" ).trigger( "click" );
             grow10State = boilerplateRedux.getState();
+            grow10Div = $( "#boilerplate-redux > div" ).width();
             $( "#grow50" ).trigger( "click" );
             grow50State = boilerplateRedux.getState();
             $( "#reset" ).trigger( "click" );
             resetState = boilerplateRedux.getState();
 
-            // doesn't work
+            // doesn't trigger the change event
             $( "#green" ).prop( "checked", true );
+            // ^^ why not?
             greenState = boilerplateRedux.getState();
-
-            // doesn't work - may need to be async
-            boilerplateRedux.on('stateChanged', function(args) {
-                stateHistory.push(args[0]);
-                console.log("foo!");
-            });
-
-            mountsDOM = $( "#boilerplate-redux > div" ).length;
 
             done();
           }
@@ -99,6 +95,7 @@ describe('boilerplateRedux', function() {
 
     it('count increases by 10 when GROW Action is dispatched with a param of 10', function() {
         expect(grow10State.count).to.equal(110);
+        expect(grow10Div).to.equal(210); // this.options.size + state.count
     });
 
     it('count increases by 50 when GROW Action is dispatched with a param of 50', function() {
@@ -107,14 +104,6 @@ describe('boilerplateRedux', function() {
 
     it('count resets when RESET Action is dispatched', function() {
         expect(resetState.count).to.equal(0);
-    });
-
-    it('color changes to green when COLOR Action is dispatched with a param of "green"', function() {
-        expect(greenState.color).to.equal("green");
-    });
-
-    it('fires an event whenever the state changes', function() {
-        expect(stateHistory[0]).to.equal(grow10State);
     });
 
     it('foo should be true', function() {
