@@ -1,9 +1,17 @@
-// base-component v1.0.4 https://github.com/viewdir/base-component#readme
+// base-component v1.0.6 https://github.com/viewdir/base-component#readme
 interface Window {
     _Components: any;
 }
 
-declare const TinyEmitter: any;
+// remove if https://github.com/scottcorgan/tiny-emitter/pull/14 is merged
+interface EventEmitter {
+  on   (event: string, callback: Function, ctx?: any): EventEmitter;
+  once (event: string, callback: Function, ctx?: any): EventEmitter;
+  emit (event: string, ...args: any[]): EventEmitter;
+  off  (event: string, callback?: Function): EventEmitter;
+}
+
+declare var TinyEmitter: any;
 declare namespace _Components {
     class BaseComponent implements IBaseComponent {
         options: IBaseComponentOptions;
@@ -11,7 +19,7 @@ declare namespace _Components {
         constructor(options: IBaseComponentOptions);
         protected _init(): boolean;
         protected _getDefaultOptions(): IBaseComponentOptions;
-        protected _emit(event: string, ...args: any[]): void;
+        _emit(event: string, ...args: any[]): EventEmitter;
         protected _resize(): void;
         databind(data?: any): void;
     }
@@ -8404,11 +8412,11 @@ declare namespace IIIFComponents {
     const CHANGE_COLOR: string;
 }
 
-declare var Redux: any;
-declare var h: any;
-declare var diff: any;
-declare var patch: any;
-declare var createElement: any;
+declare const Redux: any;
+declare const h: any;
+declare const diff: any;
+declare const patch: any;
+declare const createElement: any;
 declare namespace IIIFComponents {
     class ComponentBoilerplateRedux extends _Components.BaseComponent {
         options: IComponentBoilerplateReduxOptions;

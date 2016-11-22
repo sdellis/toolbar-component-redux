@@ -33,7 +33,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Redux = require('redux');
-require('virtual-dom/h');
 var h = require('virtual-dom/h');
 var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
@@ -141,12 +140,12 @@ var IIIFComponents;
         ComponentBoilerplateRedux.Events = Events;
     })(ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux || (IIIFComponents.ComponentBoilerplateRedux = {}));
 })(IIIFComponents || (IIIFComponents = {}));
-(function (w) {
-    if (!w.IIIFComponents) {
-        w.IIIFComponents = IIIFComponents;
+(function (g) {
+    if (!g.IIIFComponents) {
+        g.IIIFComponents = IIIFComponents;
     }
     else {
-        w.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
+        g.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
     }
 })(global);
 

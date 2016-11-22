@@ -1,9 +1,17 @@
-// base-component v1.0.4 https://github.com/viewdir/base-component#readme
+// base-component v1.0.6 https://github.com/viewdir/base-component#readme
 interface Window {
     _Components: any;
 }
 
-declare const TinyEmitter: any;
+// remove if https://github.com/scottcorgan/tiny-emitter/pull/14 is merged
+interface EventEmitter {
+  on   (event: string, callback: Function, ctx?: any): EventEmitter;
+  once (event: string, callback: Function, ctx?: any): EventEmitter;
+  emit (event: string, ...args: any[]): EventEmitter;
+  off  (event: string, callback?: Function): EventEmitter;
+}
+
+declare var TinyEmitter: any;
 declare namespace _Components {
     class BaseComponent implements IBaseComponent {
         options: IBaseComponentOptions;
@@ -11,7 +19,7 @@ declare namespace _Components {
         constructor(options: IBaseComponentOptions);
         protected _init(): boolean;
         protected _getDefaultOptions(): IBaseComponentOptions;
-        protected _emit(event: string, ...args: any[]): void;
+        _emit(event: string, ...args: any[]): EventEmitter;
         protected _resize(): void;
         databind(data?: any): void;
     }

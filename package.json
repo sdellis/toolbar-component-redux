@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/viewdir/component-boilerplate#readme",
   "devDependencies": {
-    "base-component": "viewdir/base-component#v1.0.4",
+    "base-component": "viewdir/base-component#v1.0.6",
     "chai": "^3.5.0",
     "del": "^2.2.0",
     "gulp": "^3.9.1",

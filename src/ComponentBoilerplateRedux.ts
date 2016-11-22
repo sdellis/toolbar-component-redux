@@ -1,9 +1,8 @@
-var Redux = require('redux');
-require('virtual-dom/h');
-var h = require('virtual-dom/h');
-var diff = require('virtual-dom/diff');
-var patch = require('virtual-dom/patch');
-var createElement = require('virtual-dom/create-element');
+const Redux = require('redux');
+const h = require('virtual-dom/h');
+const diff = require('virtual-dom/diff');
+const patch = require('virtual-dom/patch');
+const createElement = require('virtual-dom/create-element');
 
 namespace IIIFComponents {
     export class ComponentBoilerplateRedux extends _Components.BaseComponent {
@@ -120,10 +119,10 @@ namespace IIIFComponents.ComponentBoilerplateRedux {
     }
 }
 
-(function(w) {
-    if (!w.IIIFComponents){
-        w.IIIFComponents = IIIFComponents;
+(function(g) {
+    if (!g.IIIFComponents){
+        g.IIIFComponents = IIIFComponents;
     } else {
-        w.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
+        g.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
     }
 })(global);
