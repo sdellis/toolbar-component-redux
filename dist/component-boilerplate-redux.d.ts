@@ -19,11 +19,11 @@ declare namespace IIIFComponents {
     const CHANGE_COLOR: string;
 }
 
-declare var Redux: any;
-declare var h: any;
-declare var diff: any;
-declare var patch: any;
-declare var createElement: any;
+declare const Redux: any;
+declare const h: any;
+declare const diff: any;
+declare const patch: any;
+declare const createElement: any;
 declare namespace IIIFComponents {
     class ComponentBoilerplateRedux extends _Components.BaseComponent {
         options: IComponentBoilerplateReduxOptions;
