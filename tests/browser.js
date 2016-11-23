@@ -1,16 +1,8 @@
 var expect = require('chai').expect;
 var should = require('chai').should();
 var path = require("path");
-var square = require("../examples/js/square");
 var html = path.join(__dirname,'../examples/index.html');
 var jsdom = require("jsdom");
-
-// this is an example of unit testing a basic commonjs module
-describe('test', function() {
-    it('returns a square root', function() {
-        expect(square(2)).to.equal(4); // <-- passes
-    });
-});
 
 // this is an example of testing the component in the "browser"
 describe('boilerplateRedux browser tests', function() {

@@ -30,7 +30,6 @@
     "gulp-rename": "^1.2.2",
     "gulp-typescript": "^2.13.4",
     "gulp-utils": "viewdir/gulp-utils",
-    "jquery": "^3.1.1",
     "jsdom": "^9.8.3",
     "manifesto": "viewdir/manifesto",
     "merge2": "^1.0.2",
