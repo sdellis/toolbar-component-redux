@@ -1,9 +1,8 @@
-var Redux = require('redux');
-require('virtual-dom/h');
-var h = require('virtual-dom/h');
-var diff = require('virtual-dom/diff');
-var patch = require('virtual-dom/patch');
-var createElement = require('virtual-dom/create-element');
+const Redux = require('redux');
+const h = require('virtual-dom/h');
+const diff = require('virtual-dom/diff');
+const patch = require('virtual-dom/patch');
+const createElement = require('virtual-dom/create-element');
 
 namespace IIIFComponents {
     export class ComponentBoilerplateRedux extends _Components.BaseComponent {
@@ -20,6 +19,7 @@ namespace IIIFComponents {
             this._resize();
         }
 
+        // events
         public stateChanged(new_state): void {
             this._emit(ComponentBoilerplateRedux.Events.STATECHANGED, new_state);
         }
@@ -62,7 +62,18 @@ namespace IIIFComponents {
                 that._store.dispatch(changeColor(this.value));
             });
 
+            // $('#color-buttons > label').on('click', (event) => {
+            //     event.stopPropagation();
+            //     event.preventDefault();
+            //     that._store.dispatch(changeColor($(event.currentTarget).children("input").val()));
+            // });
+
+
             return success;
+        }
+
+        public getState(): any {
+            return this._store.getState();
         }
 
         // Create a function that declares what the DOM should look like
@@ -81,11 +92,12 @@ namespace IIIFComponents {
 
         // where we update the template
         private _updateView(): void {
-            var newTree = this._render(this._store.getState());
+            var newState = this._store.getState();
+            var newTree = this._render(newState);
             var patches = diff(this.tree, newTree);
             this.rootNode = patch(this.rootNode, patches);
             this.tree = newTree;
-            this.stateChanged(this._store.getState()); //fire event
+            this.stateChanged(newState); //fire event
         }
 
         protected _getDefaultOptions(): IComponentBoilerplateReduxOptions {
@@ -107,10 +119,10 @@ namespace IIIFComponents.ComponentBoilerplateRedux {
     }
 }
 
-(function(w) {
-    if (!w.IIIFComponents){
-        w.IIIFComponents = IIIFComponents;
+(function(g) {
+    if (!g.IIIFComponents){
+        g.IIIFComponents = IIIFComponents;
     } else {
-        w.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
+        g.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
     }
-})(window);
+})(global);
