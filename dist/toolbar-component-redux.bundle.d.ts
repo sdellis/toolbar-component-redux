@@ -8392,23 +8392,30 @@ declare module "constants" {
     export var UV_UDP_REUSEADDR: number;
 }
 declare namespace IIIFComponents {
-    function grow(i?: number): {
+    function addButton(label?: string): {
         type: string;
-        incrementBy: number;
+        label: string;
     };
-    function reset(): {
+    function toggleButton(id: any): {
         type: string;
-    };
-    function changeColor(c?: string): {
-        type: string;
-        color: string;
+        id: any;
     };
 }
 
 declare namespace IIIFComponents {
-    const GROW: string;
-    const RESET: string;
-    const CHANGE_COLOR: string;
+    const ADD_BUTTON: string;
+    const TOGGLE_BUTTON: string;
+}
+
+declare namespace IIIFComponents {
+    interface IToolbarOptions extends _Components.IBaseComponentOptions {
+        direction?: string;
+        buttons?: any;
+    }
+}
+
+declare namespace IIIFComponents {
+    function buttons(state: any[], action: any): any[];
 }
 
 declare const Redux: any;
@@ -8417,38 +8424,23 @@ declare const diff: any;
 declare const patch: any;
 declare const createElement: any;
 declare namespace IIIFComponents {
-    class ComponentBoilerplateRedux extends _Components.BaseComponent {
-        options: IComponentBoilerplateReduxOptions;
+    class Toolbar extends _Components.BaseComponent {
+        options: IToolbarOptions;
         rootNode: any;
         tree: any;
         private _store;
-        constructor(options: IComponentBoilerplateReduxOptions);
+        constructor(options: IToolbarOptions);
         stateChanged(new_state: any): void;
         protected _init(): boolean;
         getState(): any;
         private _render(state);
         private _updateView();
-        protected _getDefaultOptions(): IComponentBoilerplateReduxOptions;
+        protected _getDefaultOptions(): IToolbarOptions;
         protected _resize(): void;
     }
 }
-declare namespace IIIFComponents.ComponentBoilerplateRedux {
+declare namespace IIIFComponents.Toolbar {
     class Events {
         static STATECHANGED: string;
     }
-}
-
-declare namespace IIIFComponents {
-    interface IComponentBoilerplateReduxOptions extends _Components.IBaseComponentOptions {
-        color?: string;
-        size?: number;
-    }
-}
-
-declare namespace IIIFComponents {
-    function color(state: string, action: any): any;
-}
-
-declare namespace IIIFComponents {
-    function count(state: number, action: any): any;
 }

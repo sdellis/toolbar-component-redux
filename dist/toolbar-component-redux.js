@@ -1,30 +1,66 @@
-// component-boilerplate-redux v1.0.0 https://github.com/viewdir/component-boilerplate#readme
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.componentBoilerplateRedux = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// toolbar-component-redux v1.0.0 https://github.com/viewdir/component-boilerplate#readme
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.toolbarComponentRedux = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 //import * as actionTypes from './ActionTypes';
 var IIIFComponents;
 (function (IIIFComponents) {
-    function grow(i) {
-        if (i === void 0) { i = 1; }
-        return { type: IIIFComponents.GROW, incrementBy: i };
+    function addButton(label) {
+        if (label === void 0) { label = "unlabeled"; }
+        return { type: IIIFComponents.ADD_BUTTON, label: label };
     }
-    IIIFComponents.grow = grow;
-    function reset() {
-        return { type: IIIFComponents.RESET };
+    IIIFComponents.addButton = addButton;
+    function toggleButton(id) {
+        return { type: IIIFComponents.TOGGLE_BUTTON, id: id };
     }
-    IIIFComponents.reset = reset;
-    function changeColor(c) {
-        if (c === void 0) { c = "red"; }
-        return { type: IIIFComponents.CHANGE_COLOR, color: c };
-    }
-    IIIFComponents.changeColor = changeColor;
+    IIIFComponents.toggleButton = toggleButton;
 })(IIIFComponents || (IIIFComponents = {}));
 
 var IIIFComponents;
 (function (IIIFComponents) {
-    IIIFComponents.GROW = 'GROW';
-    IIIFComponents.RESET = 'RESET';
-    IIIFComponents.CHANGE_COLOR = 'CHANGE_COLOR';
+    IIIFComponents.ADD_BUTTON = 'ADD_BUTTON';
+    IIIFComponents.TOGGLE_BUTTON = 'TOGGLE_BUTTON';
+})(IIIFComponents || (IIIFComponents = {}));
+
+
+
+var IIIFComponents;
+(function (IIIFComponents) {
+    // export function button(state = false, action) {
+    //   switch (action.type) {
+    //     case SELECT:
+    //       return true
+    //     case DESELECT:
+    //       return false
+    //     case TOGGLE:
+    //       return !state
+    //     default:
+    //       return state
+    //   }
+    // }
+    function buttons(state, action) {
+        if (state === void 0) { state = []; }
+        switch (action.type) {
+            case IIIFComponents.ADD_BUTTON:
+                return state.concat([
+                    {
+                        label: action.label,
+                        selected: false
+                    }
+                ]);
+            case IIIFComponents.TOGGLE_BUTTON:
+                return state.map(function (button, index) {
+                    if (button.id === action.id) {
+                        return Object.assign({}, button, {
+                            selected: !button.selected
+                        });
+                    }
+                    return button;
+                });
+            default:
+                return state;
+        }
+    }
+    IIIFComponents.buttons = buttons;
 })(IIIFComponents || (IIIFComponents = {}));
 
 var __extends = (this && this.__extends) || function (d, b) {
@@ -39,25 +75,26 @@ var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 var IIIFComponents;
 (function (IIIFComponents) {
-    var ComponentBoilerplateRedux = (function (_super) {
-        __extends(ComponentBoilerplateRedux, _super);
-        function ComponentBoilerplateRedux(options) {
+    var Toolbar = (function (_super) {
+        __extends(Toolbar, _super);
+        function Toolbar(options) {
             _super.call(this, options);
             this._init();
             this._resize();
         }
         // events
-        ComponentBoilerplateRedux.prototype.stateChanged = function (new_state) {
-            this._emit(ComponentBoilerplateRedux.Events.STATECHANGED, new_state);
+        Toolbar.prototype.stateChanged = function (new_state) {
+            this._emit(Toolbar.Events.STATECHANGED, new_state);
         };
-        ComponentBoilerplateRedux.prototype._init = function () {
+        Toolbar.prototype._init = function () {
             var _this = this;
             var success = _super.prototype._init.call(this);
             if (!success) {
-                console.error("Component failed to initialise");
+                console.error("Toolbar failed to initialise");
             }
             // Initialise the state and document/view
-            var initialState = { count: this.options.size, color: this.options.color }; // We need some app data.
+            var initialState = { direction: this.options.direction,
+                buttons: this.options.buttons }; // We need some app data.
             this.tree = this._render(initialState); // We need an initial tree
             this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
             //document.body.appendChild(this.rootNode);    // ... and it should be in the document
@@ -66,8 +103,8 @@ var IIIFComponents;
             function app(state, action) {
                 if (state === void 0) { state = initialState; }
                 return {
-                    count: IIIFComponents.count(state.count, action),
-                    color: IIIFComponents.color(state.color, action)
+                    buttons: IIIFComponents.buttons(state.buttons, action),
+                    direction: state.direction
                 };
             }
             this._store = Redux.createStore(app);
@@ -76,38 +113,22 @@ var IIIFComponents;
             });
             // Add Event Listeners
             // Note: The only way to mutate the internal state is to dispatch an action.
-            var that = this;
-            $('#grow10').click(function () { return _this._store.dispatch(IIIFComponents.grow(10)); });
-            $('#grow50').click(function () { return _this._store.dispatch(IIIFComponents.grow(50)); });
-            $('#reset').click(function () { return _this._store.dispatch(IIIFComponents.reset()); });
-            $('input[type=radio][name=color]').change(function () {
-                that._store.dispatch(IIIFComponents.changeColor(this.value));
-            });
-            // $('#color-buttons > label').on('click', (event) => {
-            //     event.stopPropagation();
-            //     event.preventDefault();
-            //     that._store.dispatch(changeColor($(event.currentTarget).children("input").val()));
-            // });
+            $(this._$element).on("click", "button", function (event) { return _this._store.dispatch(IIIFComponents.toggleButton(event.target.id)); });
             return success;
         };
-        ComponentBoilerplateRedux.prototype.getState = function () {
+        Toolbar.prototype.getState = function () {
             return this._store.getState();
         };
         // Create a function that declares what the DOM should look like
-        ComponentBoilerplateRedux.prototype._render = function (state) {
-            return h('div', {
-                style: {
-                    textAlign: 'center',
-                    margin: '50px',
-                    lineHeight: (100 + state.count) + 'px',
-                    border: '1px solid ' + state.color,
-                    width: (this.options.size + state.count) + 'px',
-                    height: (this.options.size + state.count) + 'px'
-                }
-            }, [String(state.count)]);
+        Toolbar.prototype._render = function (state) {
+            return h('div.button-group.' + state.direction, {}, state.buttons.map(function (button) {
+                var selected;
+                button.selected ? selected = '.active' : selected = '';
+                return h('button.btn' + selected + '#' + button.id, button.label);
+            }));
         };
         // where we update the template
-        ComponentBoilerplateRedux.prototype._updateView = function () {
+        Toolbar.prototype._updateView = function () {
             var newState = this._store.getState();
             var newTree = this._render(newState);
             var patches = diff(this.tree, newTree);
@@ -115,78 +136,39 @@ var IIIFComponents;
             this.tree = newTree;
             this.stateChanged(newState); //fire event
         };
-        ComponentBoilerplateRedux.prototype._getDefaultOptions = function () {
+        Toolbar.prototype._getDefaultOptions = function () {
             return {
-                color: "red",
-                size: 100
+                direction: 'horizontal',
+                buttons: []
             };
         };
-        ComponentBoilerplateRedux.prototype._resize = function () {
+        Toolbar.prototype._resize = function () {
         };
-        return ComponentBoilerplateRedux;
+        return Toolbar;
     }(_Components.BaseComponent));
-    IIIFComponents.ComponentBoilerplateRedux = ComponentBoilerplateRedux;
+    IIIFComponents.Toolbar = Toolbar;
 })(IIIFComponents || (IIIFComponents = {}));
 var IIIFComponents;
 (function (IIIFComponents) {
-    var ComponentBoilerplateRedux;
-    (function (ComponentBoilerplateRedux) {
+    var Toolbar;
+    (function (Toolbar) {
         var Events = (function () {
             function Events() {
             }
             Events.STATECHANGED = 'stateChanged';
             return Events;
         }());
-        ComponentBoilerplateRedux.Events = Events;
-    })(ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux || (IIIFComponents.ComponentBoilerplateRedux = {}));
+        Toolbar.Events = Events;
+    })(Toolbar = IIIFComponents.Toolbar || (IIIFComponents.Toolbar = {}));
 })(IIIFComponents || (IIIFComponents = {}));
 (function (g) {
     if (!g.IIIFComponents) {
         g.IIIFComponents = IIIFComponents;
     }
     else {
-        g.IIIFComponents.ComponentBoilerplateRedux = IIIFComponents.ComponentBoilerplateRedux;
+        g.IIIFComponents.Toolbar = IIIFComponents.Toolbar;
     }
 })(global);
-
-
-
-var IIIFComponents;
-(function (IIIFComponents) {
-    function color(state, action) {
-        if (state === void 0) { state = 'red'; }
-        switch (action.type) {
-            case IIIFComponents.CHANGE_COLOR:
-                return action.color;
-            default:
-                return state;
-        }
-    }
-    IIIFComponents.color = color;
-})(IIIFComponents || (IIIFComponents = {}));
-
-var IIIFComponents;
-(function (IIIFComponents) {
-    function count(state, action) {
-        if (state === void 0) { state = 0; }
-        switch (action.type) {
-            case IIIFComponents.GROW:
-                return state + action.incrementBy;
-            //*
-            // Leaving this here for reference,
-            // in case you want to return an object
-            //*
-            //   return Object.assign({}, state, {
-            //     count: state + action.incrementBy
-            //   })
-            case IIIFComponents.RESET:
-                return 0;
-            default:
-                return state;
-        }
-    }
-    IIIFComponents.count = count;
-})(IIIFComponents || (IIIFComponents = {}));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"redux":15,"virtual-dom/create-element":30,"virtual-dom/diff":31,"virtual-dom/h":32,"virtual-dom/patch":33}],2:[function(require,module,exports){
@@ -1239,8 +1221,7 @@ function baseGetTag(value) {
   if (value == null) {
     return value === undefined ? undefinedTag : nullTag;
   }
-  value = Object(value);
-  return (symToStringTag && symToStringTag in value)
+  return (symToStringTag && symToStringTag in Object(value))
     ? getRawTag(value)
     : objectToString(value);
 }

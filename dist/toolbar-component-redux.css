@@ -1,17 +1,14 @@
 .active {
-    background-color: lightgreen
+  background-color: lightgreen;
 }
-
 .button-group {
   border: 1px solid blue;
   padding: 10px;
   display: inline-flex;
 }
-
 .horizontal {
   flex-direction: row;
 }
-
 .vertical {
   flex-direction: column;
 }
