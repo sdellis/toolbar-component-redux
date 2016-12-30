@@ -71,6 +71,10 @@ namespace IIIFComponents {
             return this._store.getState();
         }
 
+        public setState(new_state): any {
+            console.log(new_state);
+        }
+
         // Create a function that declares what the DOM should look like
         private _render(state: any)  {
             return h('div.button-group.' + state.direction, {},
