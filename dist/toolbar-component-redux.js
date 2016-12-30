@@ -112,6 +112,9 @@ var IIIFComponents;
         Toolbar.prototype.getState = function () {
             return this._store.getState();
         };
+        Toolbar.prototype.setState = function (new_state) {
+            console.log(new_state);
+        };
         // Create a function that declares what the DOM should look like
         Toolbar.prototype._render = function (state) {
             return h('div.button-group.' + state.direction, {}, state.buttons.map(function (button) {

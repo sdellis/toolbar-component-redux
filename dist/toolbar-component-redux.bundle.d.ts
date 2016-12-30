@@ -8426,6 +8426,7 @@ declare const createElement: any;
 declare namespace IIIFComponents {
     class Toolbar extends _Components.BaseComponent {
         options: IToolbarOptions;
+        setState(state: any): any;
         rootNode: any;
         tree: any;
         private _store;

@@ -8,6 +8,7 @@ namespace IIIFComponents {
     export class Toolbar extends _Components.BaseComponent {
 
         public options: IToolbarOptions;
+        public setState(state): any;
         public rootNode: any;
         public tree: any;
         private _store: any;
