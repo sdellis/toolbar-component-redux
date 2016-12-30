@@ -25,18 +25,6 @@ var IIIFComponents;
 
 var IIIFComponents;
 (function (IIIFComponents) {
-    // export function button(state = false, action) {
-    //   switch (action.type) {
-    //     case SELECT:
-    //       return true
-    //     case DESELECT:
-    //       return false
-    //     case TOGGLE:
-    //       return !state
-    //     default:
-    //       return state
-    //   }
-    // }
     function buttons(state, action) {
         if (state === void 0) { state = []; }
         switch (action.type) {
@@ -83,6 +71,9 @@ var IIIFComponents;
             this._resize();
         }
         // events
+        Toolbar.prototype.loaded = function (new_state) {
+            this._emit(Toolbar.Events.LOADED, new_state);
+        };
         Toolbar.prototype.stateChanged = function (new_state) {
             this._emit(Toolbar.Events.STATECHANGED, new_state);
         };
@@ -93,7 +84,8 @@ var IIIFComponents;
                 console.error("Toolbar failed to initialise");
             }
             // Initialise the state and document/view
-            var initialState = { direction: this.options.direction,
+            var initialState = { id: this.options.element,
+                direction: this.options.direction,
                 buttons: this.options.buttons }; // We need some app data.
             this.tree = this._render(initialState); // We need an initial tree
             this.rootNode = createElement(this.tree); // Create an initial root DOM node ...
@@ -104,7 +96,8 @@ var IIIFComponents;
                 if (state === void 0) { state = initialState; }
                 return {
                     buttons: IIIFComponents.buttons(state.buttons, action),
-                    direction: state.direction
+                    direction: state.direction,
+                    id: state.id
                 };
             }
             this._store = Redux.createStore(app);
@@ -156,6 +149,7 @@ var IIIFComponents;
             function Events() {
             }
             Events.STATECHANGED = 'stateChanged';
+            Events.LOADED = 'loaded';
             return Events;
         }());
         Toolbar.Events = Events;

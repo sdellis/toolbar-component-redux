@@ -9,4 +9,12 @@ namespace IIIFComponents {
       return { type: TOGGLE_BUTTON, id }
     }
 
+    // export function selectButton(id) {
+    //   return { type: SELECT_BUTTON, id }
+    // }
+    //
+    // export function deselectButton(id) {
+    //   return { type: DESELECT_BUTTON, id }
+    // }
+
 }

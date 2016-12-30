@@ -20,6 +20,10 @@ namespace IIIFComponents {
         }
 
         // events
+        public loaded(new_state): void {
+            this._emit(Toolbar.Events.LOADED, new_state);
+        }
+
         public stateChanged(new_state): void {
             this._emit(Toolbar.Events.STATECHANGED, new_state);
         }
@@ -32,7 +36,8 @@ namespace IIIFComponents {
             }
 
             // Initialise the state and document/view
-            const initialState = { direction: this.options.direction,
+            const initialState = { id: this.options.element,
+                                   direction: this.options.direction,
                                    buttons: this.options.buttons };      // We need some app data.
             this.tree = this._render(initialState);               // We need an initial tree
             this.rootNode = createElement(this.tree);     // Create an initial root DOM node ...
@@ -43,7 +48,8 @@ namespace IIIFComponents {
             function app(state = initialState, action) {
                 return {
                   buttons: buttons(state.buttons, action),
-                  direction: state.direction
+                  direction: state.direction,
+                  id: state.id
                 }
             }
 
@@ -103,6 +109,7 @@ namespace IIIFComponents {
 namespace IIIFComponents.Toolbar {
     export class Events {
         static STATECHANGED: string = 'stateChanged';
+        static LOADED: string = 'loaded';
     }
 }
 

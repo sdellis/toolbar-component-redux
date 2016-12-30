@@ -1,19 +1,5 @@
 namespace IIIFComponents {
 
-    // export function button(state = false, action) {
-    //   switch (action.type) {
-    //     case SELECT:
-    //       return true
-    //     case DESELECT:
-    //       return false
-    //     case TOGGLE:
-    //       return !state
-    //     default:
-    //       return state
-    //   }
-    // }
-
-
     export function buttons(state = [], action) {
       switch (action.type) {
         case ADD_BUTTON:

@@ -38,6 +38,7 @@ declare namespace IIIFComponents {
         tree: any;
         private _store;
         constructor(options: IToolbarOptions);
+        loaded(new_state: any): void;
         stateChanged(new_state: any): void;
         protected _init(): boolean;
         getState(): any;
@@ -50,5 +51,6 @@ declare namespace IIIFComponents {
 declare namespace IIIFComponents.Toolbar {
     class Events {
         static STATECHANGED: string;
+        static LOADED: string;
     }
 }

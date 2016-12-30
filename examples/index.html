@@ -11,8 +11,12 @@
     <script src="js/toolbar-component-redux.js"></script>
 </head>
 <body>
-    
+
+    <h2>Checkbox Style</h2>
     <div id="toolbar"></div>
+
+    <h2>Radio Style</h2>
+    <div id="toolbar-radio"></div>
 
     <script>
 
@@ -23,12 +27,31 @@
             toolbar = new IIIFComponents.Toolbar({
                 element: "#toolbar",
                 direction: "vertical",
+                //multiple: true,
+                buttons: [{id:'1', label:'foo', selected:false},
+                          {id:'2', label:'bar', selected:false}]
+            });
+
+            toolbarRadio = new IIIFComponents.Toolbar({
+                element: "#toolbar-radio",
+                direction: "horizontal",
+                //multiple: false,
                 buttons: [{id:'1', label:'foo', selected:false},
                           {id:'2', label:'bar', selected:false}]
             });
 
             toolbar.on('stateChanged', function(args) {
-                console.log("state changed: ");
+                console.log("checkbox state changed: ");
+                console.log(args);
+            });
+
+            toolbarRadio.on('stateChanged', function(args) {
+                console.log("radio state changed: ");
+                console.log(args);
+            });
+
+            toolbar.on('loaded', function(args) {
+                console.log("checkbox component loaded: ");
                 console.log(args);
             });
 
